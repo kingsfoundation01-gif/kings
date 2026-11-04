@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KINGS Study Companion</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{--bg:#0f0a1f;--surf:#1a1428;--surf2:#251b3a;--ink:#f3effa;--mute:#a99bc9;--gold:#c7a9e3;--gold-ink:#1a1030;--ok:#6fcf97;--bad:#ff8a80;--line:#352650;--glow:#2f1a55;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f4f1e8;--surf:#fff;--surf2:#ebe6d6;--ink:#0a1330;--mute:#55608a;--gold:#9a6f00;--gold-ink:#fff;--ok:#1b7f4b;--bad:#b3261e;--line:#d8d2bd;color-scheme:light}}
+:root[data-theme="light"]{--bg:#f8f6fc;--surf:#ffffff;--surf2:#efebf7;--ink:#2a1f45;--mute:#6e6788;--gold:#6d4aa8;--gold-ink:#ffffff;--ok:#1b7f4b;--bad:#b3261e;--line:#d9d4e6;--glow:#e6def6;color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Inter,system-ui,sans-serif;min-height:100vh;padding-bottom:84px}
+main{max-width:640px;margin:0 auto;padding:20px 16px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;margin:0;font-weight:700}
+h1{font-size:1.9rem;line-height:1.15}h2{font-size:1.25rem;margin:26px 0 10px}h3{font-size:1.05rem}
+.mono{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--mute)}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+input,select,textarea,button{font:inherit;color:inherit}
+input,select,textarea{width:100%;background:var(--surf2);border:1px solid var(--line);border-radius:10px;padding:10px;margin:4px 0}
+textarea{min-height:90px;resize:vertical}
+button{background:var(--surf2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;cursor:pointer}
+button.p{background:var(--gold);color:var(--gold-ink);border-color:var(--gold);font-weight:600}
+button.x{padding:4px 10px;color:var(--mute)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--surf);border-top:1px solid var(--line);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:5;overflow-x:auto}
+nav button{flex:1 0 auto;min-width:62px;border:0;background:none;font-size:.78rem;padding:8px 2px;color:var(--mute);border-radius:8px}
+nav button.on{color:var(--gold);font-weight:600;background:var(--surf2)}
+.big{font-family:Fraunces,serif;font-size:3rem;color:var(--gold);line-height:1}
+.opt{display:block;width:100%;text-align:left;margin:6px 0}
+.opt.right{border-color:var(--ok)}.opt.wrong{border-color:var(--bad)}
+.done{text-decoration:line-through;color:var(--mute)}
+.empty{color:var(--mute);padding:8px 0}
+.media{width:100%;border-radius:12px;max-height:70vh;object-fit:contain;background:var(--surf2);display:block}
+body{background:radial-gradient(900px 420px at 85% -10%,var(--glow) 0,transparent 70%),var(--bg)}
+.brand{display:none;padding:4px 8px 16px;border-bottom:1px solid var(--line);margin-bottom:10px}
+@media (min-width:900px){nav{top:0;right:auto;width:250px;flex-direction:column;border-top:0;border-right:1px solid var(--line);padding:20px 12px;gap:4px}nav button{flex:0 0 auto;text-align:left;padding:12px 14px;font-size:.95rem}.brand{display:block}body{padding-bottom:0;padding-left:250px}main{max-width:860px}}
+.bar{height:8px;background:var(--surf2);border-radius:8px;overflow:hidden}.bar i{display:block;height:100%;background:var(--gold)}
+nav button{display:flex;flex-direction:column;align-items:center;gap:3px;border:1px solid var(--line);background:var(--surf2);margin:0 3px;border-radius:12px}
+nav button .ic{font-size:1.15rem;width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:var(--surf);border:1px solid var(--line)}
+nav button.on{background:var(--surf);border-color:var(--gold);color:var(--gold)}
+a.btn{display:inline-block;background:var(--gold);color:var(--gold-ink);padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:600}
+button.box{display:flex;align-items:center;gap:8px;border-radius:12px}
+@media (min-width:900px){nav button{flex-direction:row;gap:12px;margin:0;text-align:left}}
+.dot{position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:#2ecc71;border:2px solid var(--surf)}
+</style>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#1b1530"><link rel="apple-touch-icon" href="icon-192.png"></head>
+<body>
+<main id="app"></main>
+<nav id="nav"></nav>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
+<script>
+var SBU='https://xnimgcebrwgnbrtbtuna.supabase.co',SBK='sb_publishable_mf16_-3rLXP9pwh4TtOxvA_hwdSNu0z',sb=supabase.createClient(SBU,SBK);
+(function(){
+var role=null,uid=null;
+async function me(){var r=await sb.auth.getUser();uid=r.data.user&&r.data.user.id;if(uid&&role===null){var p=await sb.from('profiles').select('role').eq('id',uid).single();role=p.data&&p.data.role}return uid}
+function D(row){return {id:row.id,exists:true,data:function(){return row.data}}}
+function sp(p){var i=p.lastIndexOf('/');return [p.slice(0,i),p.slice(i+1)]}
+async function put(path,data){var a=sp(path),r=await sb.from('docs').insert({path:path,collection:a[0],id:a[1],data:data});if(r.error&&r.error.code=='23505')r=await sb.from('docs').update({data:data}).eq('path',path);if(r.error)throw r.error}
+function R(path){return {
+  get:async function(){var r=await sb.from('docs').select('id,data').eq('path',path).maybeSingle();return r.data?D(r.data):{exists:false,id:sp(path)[1],data:function(){return null}}},
+  set:function(d){return put(path,d)},
+  update:async function(p){var r=await sb.from('docs').select('data').eq('path',path).maybeSingle();await put(path,Object.assign({},r.data?r.data.data:{},p))},
+  delete:async function(){var r=await sb.from('docs').delete().eq('path',path);if(r.error)throw r.error}}}
+function Q(col,o){o=o||{};return {
+  orderBy:function(f,d){return Q(col,Object.assign({},o,{f:f,d:d||'asc'}))},
+  limit:function(n){return Q(col,Object.assign({},o,{n:n}))},
+  where:function(f,op,v){var c={};c[f]=[v];return Q(col,Object.assign({},o,{c:c}))},
+  add:async function(d){var id=crypto.randomUUID();await put(col+'/'+id,d);return {id:id}},
+  doc:function(id){return R(col+'/'+id)},
+  onSnapshot:function(ok,bad){
+    var alive=true,t=null;
+    async function run(){try{var q=sb.from('docs').select('id,data').eq('collection',col).limit(2000);if(o.c)q=q.contains('data',o.c);var r=await q;if(r.error)throw r.error;var rows=r.data;if(o.f)rows.sort(function(a,b){var x=a.data[o.f],y=b.data[o.f];return (x>y?1:x<y?-1:0)*(o.d=='desc'?-1:1)});if(o.n)rows=rows.slice(0,o.n);if(alive)ok({docs:rows.map(D)})}catch(e){if(alive&&bad)bad(e)}}
+    run();
+    var ch=sb.channel('c'+Math.random().toString(36).slice(2)).on('postgres_changes',{event:'*',schema:'public',table:'docs',filter:'collection=eq.'+col},function(){clearTimeout(t);t=setTimeout(run,200)}).subscribe();
+    return function(){alive=false;sb.removeChannel(ch)}}}}
+var DB={collection:function(c){return Q(c)},doc:function(p){return R(p)}};
+var US={id:me,isOwner:async function(){await me();return role=='admin'},canEdit:async function(){await me();return role=='admin'},
+  profiles:async function(ids){var r=await sb.from('profiles').select('id,full_name,avatar').in('id',ids),o={};(r.data||[]).forEach(function(p){o[p.id]={name:p.full_name,avatarUrl:p.avatar||''}});return o},
+  search:async function(q){var m=await me(),t=q.replace(/[%,()]/g,''),r=await sb.from('profiles').select('id,full_name,username').or('full_name.ilike.%'+t+'%,username.ilike.%'+t+'%').limit(20);return (r.data||[]).map(function(p){return {id:p.id,name:p.full_name,isMe:p.id==m,avatarUrl:''}})}};
+var AS={upload:async function(f){var id=Array.from(crypto.getRandomValues(new Uint8Array(16))).map(function(b){return ('0'+b.toString(16)).slice(-2)}).join(''),r=await sb.storage.from('files').upload(id,f,{contentType:f.type||'application/octet-stream'});if(r.error)throw r.error;return {id:id,contentType:f.type}}};
+var DL={save:async function(o){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([o.data]));a.download=o.filename;a.click()}};
+window.claude={use:async function(n){return ({db:DB,user:US,assets:AS,downloads:DL})[n]||null}};
+})();
+</script>
+<script>
+var KEY='kings-study-v1',DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var S={rec:{},quotes:[],tt:[],tasks:[],grades:[],journal:[],qs:[],results:[],target:4.5};
+try{var raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw))}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+document.documentElement.setAttribute('data-theme',S.theme||'dark');
+var tab='home',test=null;
+var TABS=[['home','Home'],['tt','Daily Timetable'],['lec','Lectures'],['chat','Chat'],['cbt','CBT Centre'],['lib','Library'],['vault','Community'],['gpa','Academic Records']];
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function today(){return new Date().toISOString().slice(0,10)}
+function go(t){tab=t;test=null;logAct('tab_'+t);render()}
+function render(){
+  if(!authOK()){$('nav').innerHTML='';$('app').innerHTML=authView();return}
+  chatBoot();
+  drawNav();
+  $('app').innerHTML=({home:home,tt:ttView,lec:lecView,chat:chatView,cbt:cbtView,vault:vaultView,lib:libView,set:setView,admin:adminView,gpa:recView,jr:jrView})[tab]();
+  window.scrollTo(0,0);
+}
+/* HOME */
+function home(){
+  var d=new Date(),dn=DAYS[d.getDay()];
+  var cl=S.tt.filter(function(x){return x.day==dn}).sort(function(a,b){return a.start>b.start?1:-1});
+  var open=S.tasks.filter(function(t){return !t.done});
+  setTimeout(fillNotes,0);return '<div class="row"><p class="mono">KINGS · Study Companion</p><button class="box" onclick="go(\'set\')" aria-label="Settings">'+avatarHTML(28)+' ⚙️ Settings</button></div><h1>'+dn+', '+d.toLocaleDateString('en-GB',{day:'numeric',month:'long'})+'</h1>'+'<div class="grid" style="margin-top:14px"><div class="card"><p class="mono">Today’s lectures</p><div class="big">'+cl.length+'</div></div><div class="card"><p class="mono">Pending tasks</p><div class="big">'+open.length+'</div></div><div class="card"><p class="mono">Saved questions</p><div class="big">'+S.qs.length+'</div></div><div class="card"><p class="mono">Current CGPA</p><div class="big">'+(allRec().u?allRec().gpa.toFixed(2):'—')+'</div></div></div>'+
+  '<h2>Messages</h2><div id="hn"></div>'+'<h2>Today’s lectures</h2>'+(cl.length?cl.map(function(c){return '<div class="card"><h3>'+esc(c.course)+'</h3><span class="mono">'+c.start+'–'+c.end+(c.venue?' · '+esc(c.venue):'')+'</span></div>'}).join(''):'<p class="empty">No lectures today. Add classes in Timetable.</p>')+
+  '<h2>Tasks</h2><div class="row"><input id="nt" placeholder="Add a task or assignment"><button class="p" onclick="addTask()">Add</button></div>'+
+  (S.tasks.length?S.tasks.map(function(t,i){return '<div class="card row"><label style="flex:1"><input type="checkbox" style="width:auto" '+(t.done?'checked':'')+' onchange="togTask('+i+')"> <span class="'+(t.done?'done':'')+'">'+esc(t.t)+'</span></label><button class="x" onclick="delTask('+i+')" aria-label="Delete task">✕</button></div>'}).join(''):'<p class="empty">Nothing to do yet.</p>')+
+  '<p class="mono">'+open.length+' open · data stays on this device</p>'+
+  '';
+}
+function addTask(){var v=$('nt').value.trim();if(!v)return;S.tasks.unshift({t:v,done:false});save();render()}
+function togTask(i){S.tasks[i].done=!S.tasks[i].done;save();render()}
+function delTask(i){S.tasks.splice(i,1);save();render()}
+function imp(el){var f=el.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{S=Object.assign(S,JSON.parse(r.result));save();render()}catch(e){alert('That file is not a valid backup.')}};r.readAsText(f)}
+/* TIMETABLE */
+function ttView(){
+  var h='<h1>Daily timetable</h1><div class="card"><input id="tc" placeholder="Course (e.g. EEE 301)"><div class="grid"><select id="td">'+DAYS.slice(1).concat(DAYS[0]).map(function(d){return '<option>'+d+'</option>'}).join('')+'</select><input id="tv" placeholder="Venue"></div><div class="grid"><input id="ts" type="time" value="08:00"><input id="te" type="time" value="10:00"></div><button class="p" onclick="addTT()">Add class</button></div>';
+  var any=false;
+  DAYS.slice(1).concat(DAYS[0]).forEach(function(d){
+    var l=S.tt.map(function(x,i){x.i=i;return x}).filter(function(x){return x.day==d}).sort(function(a,b){return a.start>b.start?1:-1});
+    if(l.length){any=true;h+='<h2>'+d+'</h2>'+l.map(function(c){return '<div class="card row"><div><h3>'+esc(c.course)+'</h3><span class="mono">'+c.start+'–'+c.end+(c.venue?' · '+esc(c.venue):'')+'</span></div><button class="x" onclick="delTT('+c.i+')" aria-label="Delete class">✕</button></div>'}).join('')}
+  });
+  return h+(any?'':'<p class="empty">Add your first class above.</p>');
+}
+function addTT(){var c=$('tc').value.trim();if(!c)return;S.tt.push({course:c,day:$('td').value,venue:$('tv').value.trim(),start:$('ts').value,end:$('te').value});save();render()}
+function delTT(i){S.tt.splice(i,1);save();render()}
+/* GRADES */
+var PT={A:5,B:4,C:3,D:2,E:1,F:0};
+function calc(list){var u=0,p=0;list.forEach(function(g){u+=+g.cu;p+=+g.cu*PT[g.grade]});return u?{gpa:p/u,u:u,p:p}:{gpa:0,u:0,p:0}}
+function gpaView(){
+  var all=calc(S.grades),sems=[];
+  S.grades.forEach(function(g){if(sems.indexOf(g.sem)<0)sems.push(g.sem)});
+  var h='<h1>Academic records</h1><div class="card"><p class="mono">Cumulative CGPA (5.0 scale)</p><div class="big">'+all.gpa.toFixed(2)+'</div><p class="mono">'+all.u+' credit units</p><label class="mono">Target CGPA</label><input id="tg" type="number" step="0.01" min="0" max="5" value="'+S.target+'" onchange="S.target=+this.value;save();render()">'+targetNote(all)+'</div>';
+  h+='<div class="card"><input id="gc" placeholder="Course code"><div class="grid"><input id="gu" type="number" min="1" max="8" placeholder="Credit units"><select id="gg">'+Object.keys(PT).map(function(k){return '<option>'+k+'</option>'}).join('')+'</select></div><input id="gs" placeholder="Semester (e.g. 300L First)"><button class="p" onclick="addG()">Add result</button></div>';
+  sems.forEach(function(s){var l=S.grades.map(function(x,i){x.i=i;return x}).filter(function(x){return x.sem==s});h+='<h2>'+esc(s)+' · GPA '+calc(l).gpa.toFixed(2)+'</h2>'+l.map(function(g){return '<div class="card row"><span><b>'+esc(g.course)+'</b> <span class="mono">'+g.cu+' CU</span></span><span class="row"><b>'+g.grade+'</b><button class="x" onclick="delG('+g.i+')" aria-label="Delete result">✕</button></span></div>'}).join('')});
+  return h;
+}
+function targetNote(a){
+  if(!a.u)return '';
+  var nextCU=24,need=(S.target*(a.u+nextCU)-a.p)/nextCU;
+  var m=need>5?'A '+S.target+' needs more than 5.0 next semester on '+nextCU+' units, so aim to close the gap over two semesters.':need<=0?'You are already above target. Keep your grades steady.':'Over a next semester of '+nextCU+' units, you need a GPA of about <b>'+need.toFixed(2)+'</b> to reach '+S.target+'.';
+  return '<p>'+m+'</p>';
+}
+function addG(){var c=$('gc').value.trim(),u=+$('gu').value,s=$('gs').value.trim();if(!c||!u||!s){alert('Enter course, credit units and semester.');return}S.grades.push({course:c,cu:u,grade:$('gg').value,sem:s});save();render()}
+function delG(i){S.grades.splice(i,1);save();render()}
+/* JOURNAL */
+function jrView(){
+  var t=S.journal.find(function(j){return j.date==today()})||{text:'',tomorrow:''};
+  return '<h1>Daily journal</h1><div class="card"><label class="mono">How did today go?</label><textarea id="jt">'+esc(t.text)+'</textarea><label class="mono">Tomorrow’s priorities</label><textarea id="jm">'+esc(t.tomorrow)+'</textarea><button class="p" onclick="saveJ()">Save today’s entry</button></div>'+
+  '<h2>Past entries</h2>'+(S.journal.length?S.journal.slice().sort(function(a,b){return a.date<b.date?1:-1}).map(function(j){return '<div class="card"><span class="mono">'+j.date+'</span><p>'+esc(j.text)+'</p>'+(j.tomorrow?'<p class="mono">Next: '+esc(j.tomorrow)+'</p>':'')+'</div>'}).join(''):'<p class="empty">Your entries will appear here.</p>');
+}
+function saveJ(){var d=today(),e=S.journal.find(function(j){return j.date==d});if(!e){e={date:d};S.journal.push(e)}e.text=$('jt').value;e.tomorrow=$('jm').value;save();render()}
+/* CBT */
+var timer=null;
+function mergeQs(l){var n=0;l.forEach(function(x){if(x&&typeof x.q=='string'&&typeof x.course=='string'&&Array.isArray(x.o)&&x.o.length==4&&Number.isInteger(x.a)&&x.a>=0&&x.a<4&&!S.qs.some(function(y){return y.course==x.course&&y.q==x.q})){S.qs.push({course:x.course,q:x.q,o:x.o.map(String),a:x.a,e:x.e||''});n++}});save();return n}
+async function saveFile(name,data){try{var d=window.claude?await claude.use('downloads'):null;if(!d){alert('Saving files works only when the app is opened inside Claude.');return}await d.save({filename:name,data:data})}catch(e){}}
+function expScores(){var rows=['Date,Course,Mode,Score,Total'].concat(S.results.map(function(r){return [r.date,'"'+String(r.course).replace(/"/g,'""')+'"',r.mode=='e'?'Exam':'Practice',r.score,r.total].join(',')}));saveFile('cbt-scores.csv',rows.join('\n'))}
+function expQs(){saveFile('cbt-questions.json',JSON.stringify(S.qs,null,1))}
+function impQs(el){var f=el.files[0];el.value='';if(!f)return;var r=new FileReader();r.onload=function(){try{var n=mergeQs(JSON.parse(r.result));alert(n+' new questions added.');render()}catch(e){alert('That file is not a questions export.')}};r.readAsText(f)}
+var CBM='t',CSL=[];
+function cbtView(){
+  if(test)return testView();
+  var cs=[];S.qs.forEach(function(q){if(cs.indexOf(q.course)<0)cs.push(q.course)});CSL=cs;
+  var h='<h1>CBT Centre</h1><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">'+[['t','Take a test'],['q','Question bank']].map(function(m){return '<button class="'+(CBM==m[0]?'p':'')+'" onclick="CBM=\''+m[0]+'\';render()">'+m[1]+'</button>'}).join('')+'</div>';
+  var sel='<label class="mono">Course</label><select id="cc">'+cs.map(function(c){return '<option>'+esc(c)+'</option>'}).join('')+'</select>';
+  var none='<div class="card"><p class="empty">You have no questions yet. Add some in the Question bank, or receive a set from the Library.</p></div>';
+  if(CBM=='t'){
+    h+=cs.length?'<div class="card"><h3>Take a test</h3>'+sel+'<label class="mono">Number of questions</label><input id="cn" type="number" min="1" value="20"><label class="mono"><input id="cuse" type="checkbox" style="width:auto" onchange="$(\'cmw\').style.display=this.checked?\'block\':\'none\'"> Timed test</label><div id="cmw" style="display:none"><label class="mono">Test duration (minutes)</label><input id="cm" type="number" min="1" value="30"></div><button class="p" style="width:100%;margin-top:8px" onclick="startTest(\'t\')">Start test</button></div>':none;
+    var ex=S.results.slice(-8).reverse();
+    if(ex.length)h+='<h2>Recent scores</h2>'+ex.map(function(r){return '<div class="card row"><span><b>'+esc(r.course)+'</b> <span class="mono">'+r.date+'</span></span><b>'+r.score+'/'+r.total+'</b></div>'}).join('');
+  }
+  if(CBM=='q'){
+    h+=genCard()+'<div class="card"><h3>Add a question</h3><input id="qc" placeholder="Course"><textarea id="qq" placeholder="Question"></textarea>'+['A','B','C','D'].map(function(l,i){return '<input id="qo'+i+'" placeholder="Option '+l+'">'}).join('')+'<select id="qa"><option value="0">Correct: A</option><option value="1">Correct: B</option><option value="2">Correct: C</option><option value="3">Correct: D</option></select><input id="qe" placeholder="Explanation (optional)"><button class="p" onclick="addQ()">Save question</button></div>';
+    if(cs.length)h+='<h2>My courses</h2>'+cs.map(function(c,i){return '<div class="card row"><span><b>'+esc(c)+'</b> <span class="mono">'+S.qs.filter(function(q){return q.course==c}).length+' questions</span></span><button onclick="shareCourse('+i+')">Share to Library</button></div>'}).join('');
+    h+='<div class="card"><h3>Export and import</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><button onclick="expScores()">Export scores (CSV)</button><button onclick="expQs()">Export questions</button><button onclick="$(\'iqf\').click()">Import questions</button></div><input id="iqf" type="file" accept=".json" style="display:none" onchange="impQs(this)"><p class="mono">To receive questions or past papers from others, open the Library.</p></div><p class="mono">'+S.qs.length+' questions saved</p>';
+  }
+  return h;
+}
+async function shareCourse(i){
+  var c=CSL[i];if(!c)return;
+  if(!(await chatInit())){alert('Sharing needs the app to be opened inside Claude, with internet.');return}
+  var qs=S.qs.filter(function(q){return q.course==c}).slice(0,150);
+  if(JSON.stringify(qs).length>240000){alert('Too many long questions to share in one set. Export them instead.');return}
+  if(await libAdd({course:c,title:c+' question set',kind:'questions',cat:'Question set',qs:qs}))alert(qs.length+' questions shared to the Library.');
+}
+
+var QR=[],QRU=null;
+function genCard(){setTimeout(genBoot,0);return '<div class="card"><h3>Request questions from the Library</h3><p class="mono">Pick a material and the number of questions. It takes 3 to 5 minutes to generate. When ready, the questions are added to your CBT Centre automatically.</p><select id="gm"><option>Loading…</option></select><input id="gc" placeholder="Course name (optional)"><label class="mono">Number of questions</label><input id="gn" type="number" min="1" max="60" value="10"><button class="p" onclick="genQs()">Send request</button><p class="mono" id="gst"></p></div><div id="grq"></div>'}
+async function genBoot(){if(!window.claude)return;if(await chatInit()){libBoot();reqBoot();fillGen();drawReq()}}
+function fillGen(){var el=$('gm');if(!el)return;var f=LB.filter(function(x){return x.kind=='file'&&x.file});el.innerHTML=f.length?f.map(function(x){return '<option value="'+esc(x.id)+'">'+esc((x.course||'')+' · '+(x.title||''))+'</option>'}).join(''):'<option value="">No materials in the Library yet</option>'}
+function reqBoot(){if(QRU||!CDB)return;QRU=CDB.collection('qreq').orderBy('t','desc').limit(300).onSnapshot(function(sn){QR=sn.docs.map(function(d){var x=d.data();x.id=d.id;return x});S.got=S.got||{};var n=0;QR.forEach(function(r){if(r.by==CU&&r.status=='done'&&Array.isArray(r.qs)&&!S.got[r.id]){n+=mergeQs(r.qs.map(function(z){return {course:r.course,q:z.q,o:z.o,a:z.a,e:z.e}}));S.got[r.id]=1}});if(n)save();if(tab=='cbt')drawReq();if(tab=='admin')drawAdminReq()},function(){QRU=null})}
+function drawReq(){var e=$('grq');if(!e)return;var m=QR.filter(function(r){return r.by==CU});e.innerHTML=m.length?'<h2>My requests</h2>'+m.map(function(r){return '<div class="card row"><span><b>'+esc(r.course)+'</b> <span class="mono">'+r.n+' questions</span></span><span class="mono">'+(r.status=='done'?'✓ Added to your CBT':'Generating… 3 to 5 min')+'</span></div>'}).join(''):''}
+async function genQs(){
+  var x=LB.find(function(y){return y.id==$('gm').value}),n=Math.min(60,Math.max(1,+$('gn').value||10)),c=$('gc').value.trim()||(x&&x.course)||'',st=$('gst');
+  if(!x||!c){st.textContent='Choose a material first.';return}
+  try{await CDB.collection('qreq').add({by:CU,t:Date.now(),course:c.slice(0,60),n:n,title:String(x.title||'').slice(0,100),file:x.file,status:'pending'});logAct('qrequest');st.textContent='Request sent. Your questions will be ready in 3 to 5 minutes.'}
+  catch(e){st.textContent='Could not send the request. You may have view-only access.'}
+}
+async function drawAdminReq(){
+  var e=$('adq');if(!e||!CUS)return;
+  var pe=QR.filter(function(r){return r.status!='done'}).reverse(),dn=QR.length-pe.length,dr={};
+  document.querySelectorAll('[id^="aq-"]').forEach(function(t){dr[t.id]=t.value});
+  var ids=pe.map(function(r){return r.by}).filter(function(x,i,a){return a.indexOf(x)==i}),ps=ids.length?await CUS.profiles(ids):{};e=$('adq');if(!e)return;
+  e.innerHTML='<h2>Question requests ('+pe.length+' waiting)</h2>'+(pe.length?pe.map(function(r){var u=ps[r.by]||{};return '<div class="card"><div class="row"><b>'+esc(r.course)+' · '+r.n+' questions</b><span class="mono">'+Math.max(0,Math.floor((Date.now()-r.t)/60000))+' min ago</span></div><p class="mono">From '+esc(u.name||'Someone')+' · '+esc(r.title||'Material')+'</p>'+(r.file&&/^[0-9a-f]{32}$/.test(String(r.file.id))?'<a class="btn" href="https://xnimgcebrwgnbrtbtuna.supabase.co/storage/v1/object/public/files/'+r.file.id+'" target="_blank" rel="noopener">Open material</a>':'')+'<textarea id="aq-'+esc(r.id)+'" placeholder=\'Paste the questions as JSON: [{"q":"Question","o":["A","B","C","D"],"a":0,"e":"Why it is correct"}]\'></textarea><button class="p" onclick="sendReq(\''+esc(r.id)+'\')">Send to student</button></div>'}).join(''):'<p class="empty">No requests waiting.</p>')+'<p class="mono">'+dn+' completed</p>';
+  Object.keys(dr).forEach(function(k){var t=$(k);if(t)t.value=dr[k]});
+}
+async function sendReq(id){
+  var t=$('aq-'+id);if(!t)return;var list;
+  try{list=JSON.parse(t.value.replace(/```json|```/g,'').trim())}catch(e){alert('That is not valid JSON.');return}
+  if(!Array.isArray(list)||!list.length||list.some(function(z){return !z||typeof z.q!='string'||!Array.isArray(z.o)||z.o.length!=4||!Number.isInteger(z.a)||z.a<0||z.a>3})){alert('Each question needs q, four options in o, and a as 0 to 3.');return}
+  try{await CDB.doc('qreq/'+id).update({status:'done',qs:list.slice(0,60).map(function(z){return {q:z.q,o:z.o.map(String),a:z.a,e:String(z.e||'')}}),doneAt:Date.now()})}catch(e){alert('Could not send. Try again.')}
+}
+function addQ(){var o=[0,1,2,3].map(function(i){return $('qo'+i).value.trim()}),c=$('qc').value.trim(),q=$('qq').value.trim();if(!c||!q||o.some(function(x){return !x})){alert('Fill in the course, question and all four options.');return}S.qs.push({course:c,q:q,o:o,a:+$('qa').value,e:$('qe').value.trim()});save();render()}
+function fmt(s){s=Math.max(0,s);return Math.floor(s/60)+':'+('0'+(s%60)).slice(-2)}
+function startTest(mode){
+  var c=$('cc').value,ex=true,n=Math.max(1,+$('cn').value||10),mins=Math.max(1,+$('cm').value||10),timed=!!($('cuse')&&$('cuse').checked);
+  var qs=S.qs.filter(function(q){return q.course==c}).sort(function(){return Math.random()-.5}).slice(0,n);
+  test={course:c,qs:qs,i:0,ans:[],mode:ex?'e':'p',timed:timed,left:mins*60,done:false};
+  clearInterval(timer);
+  if(timed)timer=setInterval(function(){if(!test||test.done){clearInterval(timer);return}test.left--;var t=$('tm');if(t)t.textContent=fmt(test.left);if(test.left<=0)finish()},1000);
+  render();
+}
+function optBox(q,k,u,reveal){return '<div style="padding:8px 10px;border:1px solid '+(reveal&&k==q.a?'var(--ok)':reveal&&k==u?'var(--bad)':'var(--line)')+';border-radius:10px;margin:4px 0">'+'ABCD'[k]+'. '+esc(q.o[k])+(reveal&&k==q.a?' ✓':'')+'</div>'}
+function testView(){
+  var t=test,ex=t.mode=='e';
+  if(t.done)return (ex?'<h1>Result</h1><div class="card"><div class="big">'+t.score+'/'+t.qs.length+'</div><p class="mono">'+esc(t.course)+' · Test</p></div>':'<h1>Practice complete</h1><div class="card"><p>You got '+t.score+' of '+t.qs.length+' right. Review the explanations below.</p></div>')+t.qs.map(function(q,i){var u=t.ans[i];return '<div class="card"><p><b>'+(i+1)+'. '+esc(q.q)+'</b></p>'+q.o.map(function(o,k){return optBox(q,k,u,true)}).join('')+'<p class="mono">'+(q.e?esc(q.e):'No explanation saved for this question.')+'</p></div>'}).join('')+'<button class="p" onclick="go(\'cbt\')">Back to CBT Centre</button>';
+  var q=t.qs[t.i],a=t.ans[t.i],shown=!ex&&a!==undefined,last=t.i==t.qs.length-1;
+  return '<div class="row"><span class="mono">'+'TEST'+' · Question '+(t.i+1)+' of '+t.qs.length+'</span>'+(t.timed?'<span class="mono" id="tm">'+fmt(t.left)+'</span>':'')+'</div><div class="bar"><i style="width:'+(t.i/t.qs.length*100)+'%"></i></div><h2>'+esc(q.q)+'</h2>'+
+    (shown?q.o.map(function(o,k){return optBox(q,k,a,true)}).join('')+'<div class="card"><b>'+(a==q.a?'Correct.':'The right answer is '+'ABCD'[q.a]+'.')+'</b><p>'+(q.e?esc(q.e):'No explanation saved for this question.')+'</p></div><button class="p" onclick="nextQ()">'+(last?'Finish':'Next question')+'</button>':q.o.map(function(o,k){return '<button class="opt" onclick="pick('+k+')">'+'ABCD'[k]+'. '+esc(o)+'</button>'}).join(''))+
+    '<p><button class="x" onclick="if(confirm(\'Leave this test?\')){clearInterval(timer);go(\'cbt\')}">Leave test</button></p>';
+}
+function pick(k){
+  if(test.mode=='p'){if(test.ans[test.i]!==undefined)return;test.ans[test.i]=k;render();return}
+  test.ans[test.i]=k;if(test.i<test.qs.length-1){test.i++;render()}else finish();
+}
+function nextQ(){if(test.i<test.qs.length-1){test.i++;render()}else finish()}
+function finish(){
+  if(!test||test.done)return;test.done=true;clearInterval(timer);
+  test.score=test.qs.filter(function(q,i){return test.ans[i]===q.a}).length;
+  S.results.push({course:test.course,score:test.score,total:test.qs.length,date:today(),mode:test.mode});logAct(test.mode=='e'?'exam':'practice');save();render();
+}
+/* AUTH (device lock, not a server login) */
+var authed=false,ME=null,AMODE='login';
+function authOK(){return authed}
+function acct(){return ME?{name:ME.full_name,user:ME.username}:null}
+async function sha(s){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(function(x){return ('0'+x.toString(16)).slice(-2)}).join('')}
+function aerr(m){var e=$('ae');if(e)e.textContent=m}
+function em(u){return String(u).toLowerCase().replace(/[^a-z0-9._-]/g,'')+'@kings.app'}
+function authView(){var g=AMODE=='signup';return '<div class="card" style="max-width:420px;margin:8vh auto"><p class="mono">KINS SCHOLAR</p><h1>'+(g?'Create your account':'Welcome back')+'</h1>'+(g?'<input id="an" placeholder="Your full name">':'')+'<input id="au" placeholder="Username" autocomplete="username"><input id="ap" type="password" placeholder="Password">'+(g?'<input id="ap2" type="password" placeholder="Confirm password">':'')+'<button class="p" style="width:100%;margin-top:8px" onclick="'+(g?'signup()':'login()')+'">'+(g?'Create account':'Log in')+'</button><p id="ae" class="mono" style="color:var(--bad)"></p><button class="x" onclick="AMODE=\''+(g?'login':'signup')+'\';render()">'+(g?'I already have an account':'Create a new account')+'</button></div>'}
+async function loadMe(){var r=await sb.auth.getUser();if(!r.data.user){ME=null;authed=false;return}var p=await sb.from('profiles').select('*').eq('id',r.data.user.id).single();ME=p.data;authed=!!ME}
+async function signup(){var n=$('an').value.trim(),u=$('au').value.trim().toLowerCase(),p=$('ap').value;if(!n||!/^[a-z0-9._-]{3,}$/.test(u)||p.length<6)return aerr('Enter your name, a username (3 or more letters or numbers, no spaces) and a password of 6 or more characters.');if(p!=$('ap2').value)return aerr('The two passwords do not match.');aerr('Creating your account…');var r=await sb.auth.signUp({email:em(u),password:p,options:{data:{username:u,full_name:n}}});if(r.error)return aerr(/regist|exist/i.test(r.error.message)?'That username is taken.':r.error.message);if(!r.data.session){var l=await sb.auth.signInWithPassword({email:em(u),password:p});if(l.error)return aerr('Account created, but sign-in failed: '+l.error.message)}await loadMe();render()}
+async function login(){var u=$('au').value.trim().toLowerCase();aerr('Checking…');var r=await sb.auth.signInWithPassword({email:em(u),password:$('ap').value});if(r.error)return aerr('Wrong username or password.');await loadMe();render()}
+async function logout(){ADOK=false;goOffline();await sb.auth.signOut();authed=false;ME=null;render()}
+function resetAcct(){alert('To reset a forgotten password, ask an admin to reset it for you.')}
+async function boot(){try{await loadMe()}catch(e){}render()}
+/* ACADEMIC RECORDS */
+var RL=100,RS=1;
+function gr(t){return t>=70?'A':t>=60?'B':t>=50?'C':t>=45?'D':t>=40?'E':'F'}
+function tot(c){return +c.ca+ +c.exam}
+function sums(list){var u=0,p=0;list.forEach(function(c){u+=+c.cu;p+=+c.cu*PT[gr(tot(c))]});return{u:u,p:p,gpa:u?p/u:0}}
+function allRec(){var l=[];Object.keys(S.rec).forEach(function(k){l=l.concat(S.rec[k])});return sums(l)}
+function recView(){
+  var k=RL+'-'+RS,list=S.rec[k]||[],all=allRec(),s=sums(list);
+  var h='<h1>Academic records</h1><div class="card"><p class="mono">Cumulative CGPA (5.0 scale)</p><div class="big">'+all.gpa.toFixed(2)+'</div><p class="mono">'+all.u+' credit units</p><label class="mono">Target CGPA</label><input type="number" step="0.01" min="0" max="5" value="'+S.target+'" onchange="S.target=+this.value;save();render()">'+targetNote(all)+'</div>';
+  h+='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">'+[100,200,300,400,500].map(function(l){return '<button class="'+(l==RL?'p':'')+'" onclick="RL='+l+';render()">'+l+' Level</button>'}).join('')+'</div><div style="display:flex;gap:8px;margin-bottom:10px">'+[1,2].map(function(x){return '<button class="'+(x==RS?'p':'')+'" onclick="RS='+x+';render()">'+(x==1?'First':'Second')+' semester</button>'}).join('')+'</div>';
+  h+='<div class="card"><input id="rc" placeholder="Course code and title (e.g. EEE 301 Circuit Theory)"><div class="grid"><input id="ru" type="number" min="1" max="8" placeholder="Credit units"><input id="rca" type="number" min="0" max="100" placeholder="CA score"></div><div class="grid"><input id="rex" type="number" min="0" max="100" placeholder="Exam score"><input id="rtn" type="number" min="0" placeholder="Tests taken"></div><input id="ra" type="number" min="0" placeholder="Assignments done"><button class="p" onclick="addRec()">Add course</button></div>';
+  h+='<h2>'+RL+' Level · '+(RS==1?'First':'Second')+' semester · GPA '+(s.u?s.gpa.toFixed(2):'—')+'</h2>';
+  h+=list.length?list.map(function(c,i){var t=tot(c);return '<div class="card"><div class="row"><b>'+esc(c.code)+'</b><span><b>'+gr(t)+'</b> <button class="x" onclick="delRec('+i+')" aria-label="Delete course">✕</button></span></div><span class="mono">'+c.cu+' CU · CA '+c.ca+' · Exam '+c.exam+' · Total '+t+'</span><br><span class="mono">Tests '+c.tests+' · Assignments '+c.asg+'</span></div>'}).join(''):'<p class="empty">No courses added for this semester yet.</p>';
+  return h;
+}
+function addRec(){
+  var c=$('rc').value.trim(),u=+$('ru').value,ca=+$('rca').value,ex=+$('rex').value;
+  if(!c||!u){alert('Enter the course and its credit units.');return}
+  if(ca+ex>100){alert('CA plus exam cannot be more than 100.');return}
+  var k=RL+'-'+RS;(S.rec[k]=S.rec[k]||[]).push({code:c,cu:u,ca:ca,exam:ex,tests:+$('rtn').value||0,asg:+$('ra').value||0});save();render();
+}
+function delRec(i){S.rec[RL+'-'+RS].splice(i,1);save();render()}
+/* CHAT (db, user, assets capabilities) */
+var CDB=null,CUS=null,CAS=null,CU=null,CT=null,CO=null,CM=[],CUNS=null,CTU=null,TH=[],BOOT=false,HITS=[],SQ=0,CMR=null,CST=null,CT0=0,UN=0;
+var EMO=['😀','😂','😍','🥰','😎','🤔','😢','😭','😡','👍','👎','👏','🙏','💪','🔥','💯','🎉','❤️','✨','📚','✅','❌','😴','🤝'];
+var STK={fire:['🔥','Great work'],clap:['👏','Well done'],thanks:['🙏','Thank you'],hund:['💯','Perfect'],study:['📚','Study time'],lol:['😂','Too funny'],party:['🎉','Congrats'],tired:['😴','So tired'],deal:['🤝','Deal'],think:['🤔','Let me think'],strong:['💪','Keep going'],heart:['❤️','Love it']};
+function seen(){S.seen=S.seen||{};return S.seen}
+function isNew(t){return t.from!=CU&&t.t>(seen()[t.id]||0)}
+function other(t){return t.members.filter(function(m){return m!=CU})[0]}
+async function chatInit(){
+  if(CDB&&CUS&&CU)return true;
+  if(!window.claude)return false;
+  try{CDB=await claude.use('db');CUS=await claude.use('user');CAS=await claude.use('assets');CU=CUS?await CUS.id():null}catch(e){}
+  return !!(CDB&&CUS&&CU);
+}
+async function chatBoot(){
+  if(BOOT)return;BOOT=true;
+  if(!(await chatInit())){BOOT=false;return}
+  avBoot();presBoot();actStart();notifBoot();Promise.all([CUS.isOwner(),CUS.canEdit()]).then(function(r){if((r[0]||r[1])&&!ISADM){ISADM=true;TABS.push(['admin','Admin Dashboard']);drawNav()}}).catch(function(){});
+  CTU=CDB.collection('threads').where('members','array-contains',CU).onSnapshot(function(s){
+    TH=s.docs.map(function(d){var x=d.data();x.id=d.id;return x}).sort(function(a,b){return b.t-a.t});
+    notifThreads();seenNow();UN=TH.filter(isNew).length;badge();drawThreads();if(tab=='home')fillNotes();
+  },function(){});
+}
+function badge(){
+  var l='Chat'+(UN?' ('+UN+' new)':'');
+  TABS.forEach(function(t){if(t[0]=='chat')t[1]=l});
+  var b=document.querySelector('#nav button[onclick="go(\'chat\')"]');if(b){var nn=b.querySelector('.nl');if(nn)nn.textContent=l}
+}
+function seenNow(){var ch=false;TH.forEach(function(t){if(t.id==CT&&tab=='chat'&&(seen()[t.id]||0)<t.t){seen()[t.id]=t.t;ch=true}});if(ch)save()}
+async function chatOpen(){
+  var b=$('cb');if(!b)return;
+  if(!window.claude){b.innerHTML='<p class="empty">Chat works only when this app is opened inside Claude, with internet.</p>';return}
+  b.innerHTML='<p class="empty">Connecting…</p>';
+  if(!(await chatInit())){if($('cb'))$('cb').innerHTML='<p class="empty">Chat needs you to be signed in to Claude with access to this app. Ask the owner to invite you.</p>';return}
+  chatBoot();
+  if(!$('cb'))return;
+  $('cb').innerHTML='<div class="card"><input id="cs" placeholder="Search people by name to start a chat" oninput="chatSearch(this.value)"><div id="cr"></div></div><h2>Your chats</h2><div id="tl"></div><div class="card" id="cv0" style="display:none"><b id="chh"></b><div id="cl" style="max-height:46vh;overflow:auto;margin:8px 0"></div><div id="ep" style="display:none;flex-wrap:wrap;gap:4px;margin-bottom:8px"></div><div id="sp" style="display:none;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px"></div><div class="row"><input id="ct" placeholder="Type a message"><button class="p" onclick="sendMsg()">Send</button></div><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px"><button onclick="panel(\'ep\')" aria-label="Emojis">😊</button><button onclick="panel(\'sp\')" aria-label="Stickers">Stickers</button><button onclick="$(\'cfi\').click()" aria-label="Attach an image or file">📎</button><button id="cv" onclick="toggleVoice()" aria-label="Voice note">🎤</button><span class="mono" id="cvs"></span></div><input id="cfi" type="file" accept="image/*,video/*,application/pdf,.csv,.md,.json,.txt" style="display:none" onchange="pickFile(this)"><p class="mono" id="cfs"></p></div>';
+  $('ep').innerHTML=EMO.map(function(e,i){return '<button class="x" style="font-size:1.4rem" onclick="addEmo('+i+')">'+e+'</button>'}).join('');
+  $('sp').innerHTML=Object.keys(STK).map(function(k){return '<button onclick="sendSticker(\''+k+'\')"><span style="font-size:2rem;display:block">'+STK[k][0]+'</span><span class="mono">'+STK[k][1]+'</span></button>'}).join('');
+  drawThreads();
+  if(CT)openThread(CT,CO);
+}
+async function drawThreads(){
+  var e=$('tl');if(!e||!CUS)return;
+  var ids=[];TH.forEach(function(t){var o=other(t);if(o&&ids.indexOf(o)<0)ids.push(o)});
+  var ps=ids.length?await CUS.profiles(ids):{};e=$('tl');if(!e)return;
+  e.innerHTML=TH.length?TH.map(function(t,i){var p=ps[other(t)]||{};
+    return '<button class="opt" style="'+(t.id==CT?'border-color:var(--gold)':'')+'" onclick="openThreadI('+i+')"><span style="display:flex;gap:10px;align-items:center">'+avt(other(t),AV[other(t)]||p.avatarUrl,36)+'<span style="flex:1"><b>'+esc(p.name||'Someone')+'</b>'+(isNew(t)?' <span style="color:var(--gold)">● New</span>':'')+'<br><span class="mono">'+esc(t.last||'')+'</span></span></span></button>'}).join(''):'<p class="empty">No chats yet. Search for a person above to start one. When someone starts a chat with you, it appears here with a “New” mark.</p>';
+}
+function openThreadI(i){var t=TH[i];if(t)openThread(t.id,other(t))}
+function openThread(id,o){
+  CT=id;CO=o;if(CUNS)CUNS();CM=[];
+  var c=$('cv0');if(c)c.style.display='block';
+  seenNow();UN=TH.filter(isNew).length;badge();drawMsgs();drawThreads();
+  CUS.profiles([o]).then(function(ps){CHN=(ps[o]&&ps[o].name)||'Chat';hdrDot()});
+  CUNS=CDB.collection('chat/'+id+'/msgs').orderBy('t','desc').limit(100).onSnapshot(function(s){CM=s.docs.map(function(d){var x=d.data();x.id=d.id;return x}).reverse();drawMsgs()},function(){var l=$('cl');if(l)l.innerHTML='<p class="empty">Could not load messages.</p>'});
+}
+async function drawMsgs(){
+  var l=$('cl');if(!l||!CUS)return;
+  var ps=CO?await CUS.profiles([CO]):{};l=$('cl');if(!l)return;
+  l.innerHTML=CM.length?CM.map(function(m){var me=m.from==CU,nm=me?'You':(ps[m.from]&&ps[m.from].name)||'Someone',b='';
+    if(m.text)b+='<div style="white-space:pre-wrap">'+esc(m.text)+'</div>';
+    if(m.sticker&&STK[m.sticker])b+='<div style="text-align:center"><div style="font-size:3rem;line-height:1.1">'+STK[m.sticker][0]+'</div><span class="mono">'+STK[m.sticker][1]+'</span></div>';
+    if(m.voice&&String(m.voice).indexOf('data:audio/')==0)b+='<audio controls style="width:100%;margin-top:6px" src="'+esc(m.voice)+'"></audio>';
+    if(m.file&&/^[0-9a-f]{32}$/.test(String(m.file.id))){var u='https://xnimgcebrwgnbrtbtuna.supabase.co/storage/v1/object/public/files/'+m.file.id,ty=String(m.file.type||'');
+      b+=ty.indexOf('image/')==0?'<img class="media" alt="'+esc(m.file.name||'Image')+'" src="'+u+'">':ty.indexOf('video/')==0?'<video class="media" controls preload="metadata" src="'+u+'"></video>':'<a href="'+u+'" target="_blank" rel="noopener">📎 '+esc(m.file.name||'File')+'</a>'}
+    return '<div class="card" style="'+(me?'margin-left:18%;border-color:var(--gold)':'margin-right:18%')+'"><span class="mono">'+esc(nm)+' · '+new Date(m.t).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+'</span>'+b+'</div>'}).join(''):'<p class="empty">No messages yet. Say hello.</p>';
+  l.scrollTop=l.scrollHeight;
+}
+async function post(data,preview){
+  data.from=CU;data.t=Date.now();
+  try{await CDB.collection('chat/'+CT+'/msgs').add(data);logAct('message');await CDB.doc('threads/'+CT).update({t:data.t,last:String(preview).slice(0,60),from:CU});return true}
+  catch(e){alert('Message not sent. You may have view-only access.');return false}
+}
+async function sendMsg(){var el=$('ct'),t=el.value.trim();if(!t||!CT)return;el.value='';if(!(await post({text:t.slice(0,2000)},t)))el.value=t}
+function panel(id){['ep','sp'].forEach(function(x){var e=$(x);e.style.display=(x==id&&e.style.display=='none')?(x=='ep'?'flex':'grid'):'none'})}
+function addEmo(i){var e=$('ct');e.value+=EMO[i];e.focus()}
+function sendSticker(k){panel('sp');post({sticker:k},STK[k][0]+' '+STK[k][1])}
+async function pickFile(el){
+  var f=el.files[0];el.value='';if(!f||!CT)return;
+  if(!CAS){alert('File sending is not available for your account here.');return}
+  if(f.size>20*1024*1024){alert('Files must be under 20 MB.');return}
+  var s=$('cfs');if(s)s.textContent='Uploading '+f.name+'…';
+  try{var r=await CAS.upload(f);await post({file:{id:r.id,name:f.name.slice(0,80),type:r.contentType||f.type}},f.type.indexOf('image')==0?'📷 Photo':'📎 '+f.name)}
+  catch(e){alert('Could not send that file. Photos, videos, PDF, text, CSV and JSON files work. Word files do not.')}
+  s=$('cfs');if(s)s.textContent='';
+}
+async function chatSearch(q){
+  var r=$('cr'),n=++SQ;if(!r)return;
+  if(!q.trim()){r.innerHTML='';return}
+  try{var hits=await CUS.search(q.trim());if(n!=SQ||!$('cr'))return;
+    HITS=hits.filter(function(h){return !h.isMe});
+    $('cr').innerHTML=HITS.length?HITS.map(function(h,i){return '<div class="row" style="margin-top:8px"><span style="display:flex;gap:8px;align-items:center">'+avt(h.id,AV[h.id]||h.avatarUrl,32)+' '+esc(h.name||'Someone')+'</span><button onclick="chatDM('+i+')">Chat</button></div>'}).join(''):'<p class="empty">No one found.</p>';
+  }catch(e){if($('cr'))$('cr').innerHTML='<p class="empty">Search is unavailable.</p>'}
+}
+async function chatDM(i){
+  var h=HITS[i];if(!h)return;
+  var id='dm-'+(await sha([CU,h.id].sort().join('|'))).slice(0,20);
+  try{var r=CDB.doc('threads/'+id),s=await r.get();if(!s.exists)await r.set({members:[CU,h.id],t:Date.now(),last:'Started a chat',from:CU})}
+  catch(e){alert('Could not start the chat.');return}
+  var a=$('cs');if(a)a.value='';var c=$('cr');if(c)c.innerHTML='';
+  openThread(id,h.id);
+}
+async function toggleVoice(){
+  if(!CT)return;
+  if(CMR&&CMR.state=='recording'){CMR.stop();return}
+  try{
+    var s=await navigator.mediaDevices.getUserMedia({audio:true}),ch=[];
+    CMR=new MediaRecorder(s,{audioBitsPerSecond:16000});CT0=Date.now();
+    CMR.ondataavailable=function(e){if(e.data.size)ch.push(e.data)};
+    CMR.onstop=function(){clearInterval(CST);s.getTracks().forEach(function(t){t.stop()});var b=$('cv');if(b)b.textContent='🎤';var c=$('cvs');if(c)c.textContent='';sendVoice(new Blob(ch,{type:CMR.mimeType}))};
+    CMR.start();$('cv').textContent='■ Stop';
+    CST=setInterval(function(){var n=Math.floor((Date.now()-CT0)/1000),c=$('cvs');if(c)c.textContent=fmt(n)+' / 0:40';if(n>=40)CMR.stop()},500);
+  }catch(e){alert('Allow microphone access to send voice notes.')}
+}
+function sendVoice(blob){
+  var r=new FileReader();
+  r.onload=function(){if(r.result.length>200000){alert('That voice note is too long. Keep it under 40 seconds.');return}post({voice:r.result},'🎤 Voice note')};
+  r.readAsDataURL(blob);
+}
+/* SETTINGS, LIBRARY, COMMUNITY */
+var AV={},AVU=null,LB=[],LBU=null,LV=[],PFL=null,PO=[],LK=[],CMT=[],VW=[],VSEEN={},IO=null,CBO=false,PF=null,OPENC={},ULK='',VM='comm',HN=[];
+var IC={admin:'🛡️',home:'🏠',tt:'📅',lec:'🎙️',ai:'✨',chat:'💬',cbt:'📝',lib:'📚',vault:'💜',gpa:'🎓',jr:'📓'};
+function avatarHTML(px){var a=acct()||{name:'?'};return S.avatar&&String(S.avatar).indexOf('data:image/')==0?'<img src="'+S.avatar+'" alt="" width="'+px+'" height="'+px+'" style="border-radius:50%;object-fit:cover">':'<span style="display:inline-grid;place-items:center;width:'+px+'px;height:'+px+'px;border-radius:50%;background:var(--gold);color:var(--gold-ink);font-weight:700">'+esc((a.name||'?').charAt(0).toUpperCase())+'</span>'}
+function avBoot(){
+  if(AVU)return;
+  AVU=CDB.collection('avatars').limit(500).onSnapshot(function(s){AV={};s.docs.forEach(function(d){var x=d.data();if(x&&String(x.img).indexOf('data:image/')==0)AV[x.by]=x.img});if(tab=='chat')drawThreads();if(tab=='vault'&&VM=='comm')drawFeed()},function(){});
+}
+async function fillNotes(){
+  var e=$('hn');if(!e)return;
+  if(!CUS||!CU){e.innerHTML='<p class="empty">'+(window.claude?'Checking for messages…':'Open the app inside Claude to see chat notices.')+'</p>';return}
+  HN=TH.filter(isNew);
+  if(!HN.length){e.innerHTML='<p class="empty">No new messages.</p>';return}
+  var ps=await CUS.profiles(HN.map(other));e=$('hn');if(!e)return;
+  e.innerHTML=HN.map(function(t,i){var p=ps[other(t)]||{};return '<button class="opt" onclick="openFromHome('+i+')"><span style="display:flex;gap:10px;align-items:center">'+avt(other(t),AV[other(t)]||p.avatarUrl,36)+'<span><b>'+esc(p.name||'Someone')+'</b><br><span class="mono">'+esc(t.last||'')+'</span></span></span></button>'}).join('')+'<p class="mono">Tap a message to open the chat. You reply from the Chat page.</p>';
+}
+function openFromHome(i){var t=HN[i];if(!t)return;CT=t.id;CO=other(t);go('chat')}
+/* settings */
+function setTheme(t){S.theme=t;save();document.documentElement.setAttribute('data-theme',t);render()}
+function setView(){
+  var a=acct()||{name:'',user:''},th=S.theme||'dark';
+  return '<h1>Settings</h1><div class="card"><div style="display:flex;gap:14px;align-items:center">'+avatarHTML(64)+'<div><b>'+esc(a.name)+'</b><br><span class="mono">@'+esc(a.user||'')+'</span></div></div><button style="margin-top:10px" onclick="$(\'avf\').click()">Upload profile picture</button><input id="avf" type="file" accept="image/*" style="display:none" onchange="setAvatar(this)"><p class="mono">Your picture shows on Home. When you are signed in to Claude, others also see it in Chat and the Inspiration Vault community.</p></div>'+
+  '<div class="card"><h3>Appearance</h3><div style="display:flex;gap:8px;margin-top:8px"><button class="'+(th=='dark'?'p':'')+'" onclick="setTheme(\'dark\')">Dark</button><button class="'+(th=='light'?'p':'')+'" onclick="setTheme(\'light\')">Light</button></div></div>'+
+  '<div class="card"><h3>Change password</h3><input id="pw0" type="password" placeholder="Current password"><input id="pw1" type="password" placeholder="New password (6+ characters)"><button onclick="changePw()">Change password</button><p id="pwm" class="mono"></p></div>'+
+  '<div class="card"><h3>Backup and restore</h3><p class="mono">Saves your timetable, tasks, questions, scores, records and journal. Recordings and vault files are not included.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button onclick="exp()">Export backup</button><button onclick="$(\'imp\').click()">Import backup</button></div><input id="imp" type="file" accept=".json" style="display:none" onchange="imp(this)"></div>'+
+  '<div class="card"><h3>Online status</h3><p class="mono">Others see a green dot beside your picture while you are online.</p><button onclick="toggleOnline()">'+(S.hideOnline?'Show me as online':'Hide my online status')+'</button></div>'+
+  '<div class="card"><h3>Help</h3><p>Need help? Message on WhatsApp only.</p><a class="btn" href="https://wa.me/2348139038508" target="_blank" rel="noopener">08139038508 on WhatsApp</a></div>'+
+  '<div class="card"><h3>Erase my study data</h3><p class="mono">Removes everything saved on this device. Your login stays.</p><button onclick="eraseAll()">Erase data</button></div>'+
+  '<div class="card"><button class="p" onclick="logout()">Log out</button></div><p class="mono">KINS Scholar · version 1.0</p>';
+}
+function exp(){saveFile('kings-study-backup.json',JSON.stringify(S))}
+async function changePw(){var o=$('pw0').value,n=$('pw1').value,m=$('pwm');if(n.length<6){m.textContent='The new password must be at least 6 characters.';return}var c=await sb.auth.signInWithPassword({email:em(ME.username),password:o});if(c.error){m.textContent='Current password is wrong.';return}var r=await sb.auth.updateUser({password:n});m.textContent=r.error?'Could not change the password.':'Password changed.';$('pw0').value='';$('pw1').value=''}
+function eraseAll(){
+  if(!confirm('Erase all study data on this device, including recordings and vault files? Your login stays.'))return;
+  try{localStorage.removeItem(KEY)}catch(e){}
+  S={act:S.act,rec:{},quotes:[],tt:[],tasks:[],grades:[],journal:[],qs:[],results:[],target:4.5};document.documentElement.setAttribute('data-theme','dark');
+  db(function(d){var t=d.transaction('f','readwrite');t.objectStore('f').clear();t.oncomplete=function(){render()}});
+}
+function setAvatar(el){
+  var f=el.files[0];el.value='';if(!f)return;var r=new FileReader();
+  r.onload=function(){var im=new Image();im.onload=function(){var c=document.createElement('canvas'),z=128,m=Math.min(im.width,im.height);c.width=c.height=z;c.getContext('2d').drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,z,z);S.avatar=c.toDataURL('image/jpeg',.8);save();pushAvatar();render()};im.src=r.result};
+  r.readAsDataURL(f);
+}
+async function pushAvatar(){try{if(!(await chatInit()))return;var k=(await sha(CU)).slice(0,16);await CDB.doc('avatars/'+k).set({by:CU,img:S.avatar})}catch(e){}}
+/* library */
+async function libBoot(){
+  if(LBU)return;LBU=1;
+  LBU=CDB.collection('library').orderBy('t','desc').limit(200).onSnapshot(function(s){LB=s.docs.map(function(d){var x=d.data();x.id=d.id;return x});if(tab=='lib')drawLib();if(tab=='cbt')fillGen()},function(){});
+}
+function libView(){setTimeout(libOpen,0);return '<h1>Library</h1><p class="mono">Shared with everyone who can open this app. Upload past questions and notes for a course, or download what others shared.</p><div id="lb"></div>'}
+async function libOpen(){
+  var b=$('lb');if(!b)return;
+  if(!window.claude){b.innerHTML='<p class="empty">The library works only when this app is opened inside Claude, with internet.</p>';return}
+  b.innerHTML='<p class="empty">Connecting…</p>';
+  if(!(await chatInit())){if($('lb'))$('lb').innerHTML='<p class="empty">The library needs you to be signed in to Claude with access to this app.</p>';return}
+  libBoot();if(!$('lb'))return;
+  $('lb').innerHTML='<div class="card"><h3>Share something</h3><input id="lcu" placeholder="Course (e.g. EEE 301)"><input id="lti" placeholder="Title (e.g. 2023 past questions)"><select id="lcat"><option>Past questions</option><option>Material</option></select><select id="llv"><option>100 level</option><option>200 level</option><option>300 level</option><option>400 level</option><option>500 level</option></select><div class="grid"><button onclick="$(\'lfi\').click()">Choose file</button><button class="p" onclick="libUpload()">Upload</button></div><input id="lfi" type="file" accept="image/*,application/pdf,.csv,.md,.json,.txt" style="display:none" onchange="PFL=this.files[0];$(\'lfn\').textContent=PFL?PFL.name:\'\'"><p class="mono" id="lfn"></p><button onclick="libShareQs()">Share my saved questions for this course</button><p class="mono" id="lst"></p></div><select id="lfl" onchange="drawLib()"><option value="">All levels</option><option>100 level</option><option>200 level</option><option>300 level</option><option>400 level</option><option>500 level</option></select><input id="lq" placeholder="Search by course or title" oninput="drawLib()"><div id="ll2"></div>';
+  drawLib();
+}
+async function drawLib(){
+  var e=$('ll2');if(!e||!CUS)return;
+  var q=(($('lq')||{}).value||'').toLowerCase();
+  var lf=($('lfl')||{}).value||'';LV=LB.filter(function(x){return (!lf||x.level==lf)&&(!q||String(x.course).toLowerCase().indexOf(q)>=0||String(x.title).toLowerCase().indexOf(q)>=0)});LV.sort(function(a,b){return String(a.level||'~').localeCompare(String(b.level||'~'))||b.t-a.t});
+  var ids=[];LV.forEach(function(x){if(ids.indexOf(x.by)<0)ids.push(x.by)});
+  var ps=ids.length?await CUS.profiles(ids):{};e=$('ll2');if(!e)return;
+  var pl;e.innerHTML=LV.length?LV.map(function(x,i){var p=ps[x.by]||{},act='',hd=(x.level||'Other')!=pl?'<h2>'+esc(x.level||'Other')+'</h2>':'';pl=x.level||'Other';
+    if(x.kind=='file'&&x.file&&/^[0-9a-f]{32}$/.test(String(x.file.id)))act='<a class="btn" href="https://xnimgcebrwgnbrtbtuna.supabase.co/storage/v1/object/public/files/'+x.file.id+'" target="_blank" rel="noopener">Open or download</a>';
+    if(x.kind=='questions'&&Array.isArray(x.qs))act='<button onclick="libImport('+i+')">Add '+x.qs.length+' questions to my CBT</button>';
+    return hd+'<div class="card"><div class="row"><b>'+esc(x.title||'Untitled')+'</b><span class="mono">'+esc((x.cat||(x.kind=='questions'?'Question set':'Material'))+' · '+(x.course||''))+'</span></div><span class="mono">'+esc(x.official?'Official · KINGS Admin':x.by==CU?'You':p.name||'Someone')+' · '+new Date(x.t).toLocaleDateString('en-GB')+'</span><div style="margin-top:8px;display:flex;gap:8px;align-items:center">'+act+(x.by==CU?'<button class="x" onclick="libDel('+i+')">Delete</button>':'')+'</div></div>'}).join(''):'<p class="empty">Nothing shared yet.</p>';
+}
+async function libAdd(d){try{d.by=CU;d.t=Date.now();await CDB.collection('library').add(d);logAct('library_share');return true}catch(e){alert('Could not share that. You may have view-only access.');return false}}
+async function libUpload(){
+  var c=$('lcu').value.trim(),t=$('lti').value.trim(),st=$('lst');
+  if(!c||!t||!PFL){st.textContent='Enter the course, a title and choose a file.';return}
+  if(!CAS){st.textContent='File uploads are not available for your account here.';return}
+  if(PFL.size>20*1024*1024){st.textContent='Files must be under 20 MB.';return}
+  st.textContent='Uploading…';
+  try{var r=await CAS.upload(PFL);if(await libAdd({course:c,title:t,kind:'file',cat:$('lcat').value,level:$('llv').value,file:{id:r.id,name:PFL.name.slice(0,80),type:r.contentType||PFL.type}})){st.textContent='Shared.';PFL=null;$('lfn').textContent=''}else st.textContent=''}
+  catch(e){st.textContent='Upload failed. Photos, PDF, text, CSV and JSON files work. Word files do not.'}
+}
+async function libShareQs(){
+  var c=$('lcu').value.trim(),st=$('lst');if(!c){st.textContent='Enter the course first.';return}
+  var qs=S.qs.filter(function(q){return q.course.toLowerCase()==c.toLowerCase()}).slice(0,150);
+  if(!qs.length){st.textContent='You have no saved questions for that course.';return}
+  if(JSON.stringify(qs).length>240000){st.textContent='Too many long questions. Export them instead.';return}
+  if(await libAdd({course:c,title:($('lti').value.trim()||'Questions'),kind:'questions',cat:'Question set',level:$('llv').value,qs:qs}))st.textContent=qs.length+' questions shared.';
+}
+function libImport(i){var x=LV[i];if(!x||!Array.isArray(x.qs))return;alert(mergeQs(x.qs)+' new questions added to your CBT Centre.')}
+async function libDel(i){var x=LV[i];if(!x||x.by!=CU||!confirm('Delete this from the library?'))return;try{await CDB.doc('library/'+x.id).delete()}catch(e){alert('Could not delete.')}}
+/* community */
+function vaultView(){return '<h1>Community</h1><div style="display:flex;gap:8px;margin-bottom:12px"><button class="'+(VM=='comm'?'p':'')+'" onclick="VM=\'comm\';render()">Community</button><button class="'+(VM=='mine'?'p':'')+'" onclick="VM=\'mine\';render()">Saved offline</button></div>'+(VM=='comm'?commView():myVaultView())}
+function commView(){setTimeout(commOpen,0);return '<div id="cmb"></div>'}
+async function commBoot(){
+  if(CBO)return;CBO=true;ULK=(await sha(CU)).slice(0,16);
+  var r=function(){if(tab=='vault'&&VM=='comm')drawFeed()};
+  CDB.collection('posts').orderBy('t','desc').limit(50).onSnapshot(function(s){PO=s.docs.map(function(d){var x=d.data();x.id=d.id;return x});r()},function(){});
+  CDB.collection('likes').limit(2000).onSnapshot(function(s){LK=s.docs.map(function(d){return d.data()});r()},function(){});
+  CDB.collection('views').limit(5000).onSnapshot(function(s){VW=s.docs.map(function(d){return d.data()});r()},function(){});
+  CDB.collection('comments').orderBy('t','asc').limit(2000).onSnapshot(function(s){CMT=s.docs.map(function(d){var x=d.data();x.id=d.id;return x});r()},function(){});
+}
+async function commOpen(){
+  var b=$('cmb');if(!b)return;
+  if(!window.claude){b.innerHTML='<p class="empty">The community works only when this app is opened inside Claude, with internet.</p>';return}
+  b.innerHTML='<p class="empty">Connecting…</p>';
+  if(!(await chatInit())){if($('cmb'))$('cmb').innerHTML='<p class="empty">The community needs you to be signed in to Claude with access to this app.</p>';return}
+  await commBoot();followBoot();if(!$('cmb'))return;
+  $('cmb').innerHTML='<div class="card"><textarea id="pt" placeholder="Share a word, a picture or a video that inspires you"></textarea><div class="row"><button onclick="$(\'pfi\').click()">📎 Photo or video</button><button class="p" onclick="doPost()">Post</button></div><input id="pfi" type="file" accept="image/*,video/*,audio/*" style="display:none" onchange="PF=this.files[0];$(\'pfn\').textContent=PF?PF.name:\'\'"><p class="mono" id="pfn"></p></div><div id="pf"></div>';
+  drawFeed();
+}
+function mediaHTML(m){
+  if(!m||!/^[0-9a-f]{32}$/.test(String(m.id)))return '';var u='https://xnimgcebrwgnbrtbtuna.supabase.co/storage/v1/object/public/files/'+m.id,t=String(m.type||'');
+  return t.indexOf('image/')==0?'<img class="media" alt="'+esc(m.name||'Image')+'" src="'+u+'">':t.indexOf('video/')==0?'<video class="media" controls preload="metadata" src="'+u+'"></video>':t.indexOf('audio/')==0?'<audio controls style="width:100%" src="'+u+'"></audio>':'';
+}
+async function drawFeed(){
+  var f=$('pf');if(!f||!CUS)return;PO.sort(function(a,b){return (b.t+(isF(b.by)?2.592e8:0))-(a.t+(isF(a.by)?2.592e8:0))});
+  var ids=[];PO.forEach(function(p){ids.push(p.by)});CMT.forEach(function(c){ids.push(c.by)});
+  ids=ids.filter(function(x,i){return ids.indexOf(x)==i});
+  var ps=ids.length?await CUS.profiles(ids):{};f=$('pf');if(!f)return;
+  var dr={};document.querySelectorAll('[id^="ci-"]').forEach(function(e){dr[e.id]=e.value});
+  function who(id){var p=ps[id]||{};return {n:id==CU?'You':p.name||'Someone',a:AV[id]||p.avatarUrl||''}}
+  f.innerHTML=PO.length?PO.map(function(p,i){
+    var w=who(p.by),n=LK.filter(function(l){return l.post==p.id}).length,liked=LK.some(function(l){return l.post==p.id&&l.by==CU}),cs=CMT.filter(function(c){return c.post==p.id}),m=mediaHTML(p.media);
+    return '<div class="card" data-pid="'+esc(p.id)+'"><div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">'+avt(p.by,w.a,36)+'<span><b>'+esc(w.n)+'</b>'+fbtn(p.by)+'<br><span class="mono">'+new Date(p.t).toLocaleDateString('en-GB')+' · '+fc(p.by)+' followers</span></span>'+'</div>'+(p.text?'<div style="white-space:pre-wrap;margin-bottom:8px">'+esc(p.text)+'</div>':'')+m+
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button onclick="likePost('+i+')">'+(liked?'♥':'♡')+' '+n+'</button><button onclick="togC('+i+')">💬 '+cs.length+'</button>'+(m&&p.media.type.indexOf('audio/')!=0?'<button onclick="saveMedia('+i+')">Save offline</button>':'')+(p.by==CU?'<span class="mono" style="align-self:center">👁 '+VW.filter(function(v){return v.post==p.id}).length+' viewed</span><button class="x" onclick="delPost('+i+')">Delete</button>':(ISADM?'<button class="x" onclick="delPost('+i+')">Remove (admin)</button>':''))+'</div>'+
+      (OPENC[p.id]?'<div style="margin-top:10px">'+cs.map(function(c){var cw=who(c.by);return '<div class="card" style="margin-bottom:6px"><span class="mono">'+esc(cw.n)+'</span>'+fbtn(c.by)+'<div style="white-space:pre-wrap">'+esc(c.text)+'</div>'+(c.by==CU?'<button class="x" onclick="delCmt('+CMT.indexOf(c)+')">Delete</button>':'')+'</div>'}).join('')+'<div class="row"><input id="ci-'+esc(p.id)+'" placeholder="Write a comment"><button class="p" onclick="commentPost('+i+')">Send</button></div></div>':'')+'</div>'}).join(''):'<p class="empty">No posts yet. Be the first to share something.</p>';
+  Object.keys(dr).forEach(function(k){var e=$(k);if(e)e.value=dr[k]});
+  if(window.IntersectionObserver){if(IO)IO.disconnect();IO=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting)markView(x.target.getAttribute('data-pid'))})},{threshold:.5});document.querySelectorAll('[data-pid]').forEach(function(el){IO.observe(el)})}
+}
+function markView(pid){
+  var p=PO.filter(function(x){return x.id==pid})[0];
+  if(!p||p.by==CU||VSEEN[pid]||!ULK)return;VSEEN[pid]=1;
+  CDB.doc('views/'+pid+'_'+ULK).set({post:pid,by:CU,t:Date.now()}).catch(function(){VSEEN[pid]=0});
+}
+async function doPost(){
+  var t=$('pt').value.trim();if(!t&&!PF)return;
+  try{var m=null;if(PF){if(!CAS){alert('Uploads are not available for your account here.');return}if(PF.size>20*1024*1024){alert('Files must be under 20 MB.');return}var r=await CAS.upload(PF);m={id:r.id,name:PF.name.slice(0,80),type:r.contentType||PF.type}}
+    await CDB.collection('posts').add({by:CU,t:Date.now(),text:t.slice(0,1500),media:m});logAct('post');$('pt').value='';PF=null;$('pfn').textContent=''}
+  catch(e){alert('Could not post. Photos, videos and audio work, and you need contributor access.')}
+}
+async function likePost(i){var p=PO[i];if(!p)return;var ref=CDB.doc('likes/'+p.id+'_'+ULK);try{if(LK.some(function(l){return l.post==p.id&&l.by==CU}))await ref.delete();else await ref.set({post:p.id,by:CU,t:Date.now()})}catch(e){}}
+function togC(i){var p=PO[i];if(p){OPENC[p.id]=!OPENC[p.id];drawFeed()}}
+async function commentPost(i){var p=PO[i],e=$('ci-'+p.id),v=e?e.value.trim():'';if(!v)return;e.value='';try{await CDB.collection('comments').add({post:p.id,by:CU,t:Date.now(),text:v.slice(0,500)});logAct('comment')}catch(x){e.value=v;alert('Could not send the comment.')}}
+async function delPost(i){var p=PO[i];if(!p||(p.by!=CU&&!ISADM)||!confirm('Delete this post?'))return;try{await CDB.doc('posts/'+p.id).delete()}catch(e){alert('Could not delete.')}}
+async function delCmt(j){var c=CMT[j];if(!c||c.by!=CU)return;try{await CDB.doc('comments/'+c.id).delete()}catch(e){}}
+function saveMedia(i){var m=PO[i]&&PO[i].media;if(!m||!/^[0-9a-f]{32}$/.test(String(m.id)))return;fetch('https://xnimgcebrwgnbrtbtuna.supabase.co/storage/v1/object/public/files/'+m.id).then(function(r){return r.blob()}).then(function(b){dbPut({id:'M'+Date.now(),kind:'media',type:m.type||b.type,name:m.name||'saved',blob:b},function(){alert('Saved to Saved offline.')})}).catch(function(){alert('Could not save that file.')})}
+/* JOURNAL IN CHAT, PRESENCE, ACTIVITY, ADMIN */
+var FW=[],FWU=null;
+function fc(id){return FW.filter(function(f){return f.to==id}).length}
+function isF(id){return FW.some(function(f){return f.to==id&&f.by==CU})}
+function followBoot(){if(FWU||!CDB)return;FWU=CDB.collection('follows').limit(2000).onSnapshot(function(s){FW=s.docs.map(function(d){return d.data()});if(tab=='vault')drawFeed();if(tab=='admin')drawAdmin()},function(){FWU=null})}
+async function follow(i){var p=PO[i];if(!p||p.by==CU)return;var ref=CDB.doc('follows/'+(CU+'_'+p.by).replace(/[^\w-]/g,''));try{if(isF(p.by))await ref.delete();else await ref.set({by:CU,to:p.by,t:Date.now()})}catch(e){alert('Could not update. You may have view-only access.')}}
+var PT=null,NPS=null,NPU=null;
+function fbtn(id){if(!id||id==CU)return '';var f=isF(id);return '<button title="'+(f?'Following. Tap to unfollow':'Follow')+'" aria-label="'+(f?'Unfollow':'Follow')+'" onclick="followUser(\''+id+'\')" style="margin-left:6px;padding:0 9px;min-height:0;height:22px;line-height:1;border-radius:999px;font-size:13px;vertical-align:middle;'+(f?'':'background:#c8a8e8;color:#1b1530;')+'">'+(f?'✓':'＋')+'</button>'}
+async function followUser(id){if(!id||id==CU)return;var ref=CDB.doc('follows/'+(CU+'_'+id).replace(/[^\w-]/g,''));try{if(isF(id))await ref.delete();else await ref.set({by:CU,to:id,t:Date.now()})}catch(e){alert('Could not update. Try again.')}}
+function toast(msg,fn){var t=document.createElement('div');t.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:90px;max-width:92%;background:#2a2142;color:#fff;border:1px solid #6a54a8;border-radius:14px;padding:12px 16px;z-index:9999;box-shadow:0 8px 30px #0008;cursor:pointer';t.textContent=msg;t.onclick=function(){t.remove();if(fn)fn()};document.body.appendChild(t);setTimeout(function(){t.remove()},6000)}
+function notify(title,body,fn){toast(title+' '+body,fn);try{if(window.Notification&&Notification.permission=='granted'&&document.visibilityState!='visible'&&navigator.serviceWorker)navigator.serviceWorker.ready.then(function(r){r.showNotification(title,{body:body,icon:'icon-192.png',badge:'icon-192.png'})})}catch(e){}}
+function notifThreads(){var n={};TH.forEach(function(t){n[t.id]=t.t;if(PT&&t.from!=CU&&t.t>(PT[t.id]||0)&&!(t.id==CT&&tab=='chat'&&document.visibilityState=='visible')){var o=other(t);CUS.profiles([o]).then(function(ps){notify((ps[o]&&ps[o].name)||'A friend','sent you a message',function(){go('chat')})})}});PT=n}
+function notifBoot(){
+  followBoot();
+  if(window.Notification&&Notification.permission=='default'&&!S.nq&&!$('nbar')){var b=document.createElement('div');b.id='nbar';b.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:90px;max-width:92%;background:#2a2142;color:#fff;border:1px solid #6a54a8;border-radius:14px;padding:12px 16px;z-index:9999;display:flex;gap:8px;align-items:center;flex-wrap:wrap';b.innerHTML='<span>Get notified of new messages and posts from people you follow?</span><button class="p" id="nyes">Turn on</button><button id="nno">Not now</button>';document.body.appendChild(b);$('nyes').onclick=function(){b.remove();Notification.requestPermission()};$('nno').onclick=function(){b.remove();S.nq=1;save()}}
+  NPU=CDB.collection('posts').orderBy('t','desc').limit(30).onSnapshot(function(s){var ids={};s.docs.forEach(function(d){ids[d.id]=1});if(NPS){s.docs.forEach(function(d){var x=d.data();if(!NPS[d.id]&&x.by!=CU&&isF(x.by))CUS.profiles([x.by]).then(function(ps){notify((ps[x.by]&&ps[x.by].name)||'Someone you follow','posted in Community',function(){go('vault')})})})}NPS=ids},function(){});
+}
+var CHM='friends',JR=[],JRU=null,PRES={},PRU=null,PKEY='',ISADM=false,ACT=null,ACTT=null,ACTK='',CHN='',AD=[],ADU=null;
+function chatView(){
+  setTimeout(CHM=='friends'?chatOpen:journalOpen,0);
+  return '<h1>Chat</h1><div style="display:flex;gap:8px;margin-bottom:12px"><button class="'+(CHM=='friends'?'p':'')+'" onclick="CHM=\'friends\';render()">Friends</button><button class="'+(CHM=='journal'?'p':'')+'" onclick="CHM=\'journal\';render()">My Journal</button></div>'+(CHM=='friends'?'<p class="mono">Everyone who can open this app can read these chats. Do not share private details.</p>':'')+'<div id="cb"></div>';
+}
+/* journal */
+async function journalOpen(){
+  var b=$('cb');if(!b)return;
+  var on=await chatInit();
+  if(on&&!JRU)JRU=CDB.collection('data/users/'+CU).orderBy('date','desc').limit(120).onSnapshot(function(s){JR=s.docs.map(function(d){return d.data()});if(tab=='chat'&&CHM=='journal')drawJournal()},function(){JRU=null});
+  drawJournal();
+}
+function jrList(){return (JRU?JR:S.journal).slice().sort(function(a,b){return a.date<b.date?1:-1})}
+function drawJournal(){
+  var b=$('cb');if(!b)return;
+  var l=jrList(),t=l.filter(function(j){return j.date==today()})[0]||{text:'',tomorrow:''},dj=$('jt'),dm=$('jm'),vt=dj?dj.value:t.text,vm=dm?dm.value:t.tomorrow;
+  b.innerHTML='<div class="card"><p class="mono">'+(JRU?'Saved to your own account. Only you can read it.':'Saved on this device only. Open the app inside Claude to save to your account.')+'</p><label class="mono">How did today go?</label><textarea id="jt">'+esc(vt)+'</textarea><label class="mono">Tomorrow’s priorities</label><textarea id="jm">'+esc(vm)+'</textarea><button class="p" onclick="saveJ()">Save today’s entry</button></div>'+
+  (JRU&&S.journal.length?'<div class="card"><p class="mono">You have '+S.journal.length+' older entries on this device.</p><button onclick="moveJ()">Move them to my account</button></div>':'')+
+  '<h2>Past entries</h2>'+(l.length?l.map(function(j){return '<div class="card"><span class="mono">'+esc(j.date)+'</span><p style="white-space:pre-wrap">'+esc(j.text||'')+'</p>'+(j.tomorrow?'<p class="mono">Next: '+esc(j.tomorrow)+'</p>':'')+'</div>'}).join(''):'<p class="empty">Your entries will appear here.</p>');
+}
+async function saveJ(){
+  var d=today(),e={date:d,text:$('jt').value,tomorrow:$('jm').value,t:Date.now()};
+  if(JRU){try{await CDB.doc('data/users/'+CU+'/'+d).set(e);logAct('journal')}catch(x){alert('Could not save to your account.')}}
+  else{var a=S.journal.filter(function(j){return j.date==d})[0];if(a){a.text=e.text;a.tomorrow=e.tomorrow}else S.journal.push({date:d,text:e.text,tomorrow:e.tomorrow});save();drawJournal()}
+}
+async function moveJ(){try{for(var i=0;i<S.journal.length;i++){var j=S.journal[i];await CDB.doc('data/users/'+CU+'/'+j.date).set({date:j.date,text:j.text||'',tomorrow:j.tomorrow||'',t:Date.now()})}S.journal=[];save();drawJournal()}catch(e){alert('Could not move the entries.')}}
+/* presence */
+function isOn(id){var p=PRES[id];return !!(p&&Date.now()-p.t<90000)}
+function dotHTML(id){return isOn(id)?'<span class="dot"></span>':''}
+function avt(id,src,px){return '<span style="position:relative;display:inline-block;flex:none"><img src="'+esc(src||'')+'" alt="" width="'+px+'" height="'+px+'" style="border-radius:50%;object-fit:cover">'+dotHTML(id)+'</span>'}
+async function presBoot(){
+  if(PRU)return;PRU=1;
+  PRU=CDB.collection('presence').limit(1000).onSnapshot(function(s){PRES={};s.docs.forEach(function(d){var x=d.data();if(x&&x.by)PRES[x.by]={t:x.t}});presRefresh()},function(){});
+  PKEY=(await sha(CU)).slice(0,16);
+  var beat=function(){if(S.hideOnline||document.visibilityState!='visible')return;CDB.doc('presence/'+PKEY).set({by:CU,t:Date.now()}).catch(function(){})};
+  beat();setInterval(beat,30000);document.addEventListener('visibilitychange',beat);setInterval(presRefresh,30000);
+}
+function goOffline(){if(PKEY&&CDB&&CU)CDB.doc('presence/'+PKEY).set({by:CU,t:0}).catch(function(){})}
+function toggleOnline(){S.hideOnline=!S.hideOnline;save();if(S.hideOnline)goOffline();render()}
+function hdrDot(){var h=$('chh');if(h&&CHN)h.innerHTML=esc(CHN)+(isOn(CO)?' <span class="dot" style="position:static;display:inline-block;margin-left:4px"></span>':'')}
+function presRefresh(){if(tab=='chat'&&CHM=='friends'){drawThreads();hdrDot()}if(tab=='vault'&&VM=='comm')drawFeed();if(tab=='lib')drawLib();if(tab=='admin')drawAdmin()}
+/* activity */
+function actStart(){
+  if(ACT)return;
+  ACT=S.act=S.act||{by:CU,first:Date.now(),sessions:0,counts:{},days:[]};
+  ACT.by=CU;ACT.sessions=(ACT.sessions||0)+1;actTouch();
+}
+function actTouch(){ACT.last=Date.now();var d=today();if(ACT.days.indexOf(d)<0){ACT.days.push(d);ACT.days=ACT.days.slice(-60)}clearTimeout(ACTT);ACTT=setTimeout(actFlush,4000)}
+function logAct(k){if(!ACT)return;ACT.counts[k]=(ACT.counts[k]||0)+1;actTouch()}
+async function actFlush(){if(!ACT||!CDB)return;save();try{await CDB.doc('activity/'+CU).set(ACT)}catch(e){}}
+/* admin dashboard (owner and Editors only) */
+var ADOK=false;
+function adminView(){
+  if(!ADOK)return '<h1>Admin Dashboard</h1><div class="card" style="max-width:420px"><p class="mono">Confirm it is you. Enter the same details you registered with.</p><input id="gn1" placeholder="Name"><input id="gn3" placeholder="Username" autocomplete="username"><input id="gn4" type="password" placeholder="Password"><button class="p" onclick="adminUnlock()">Open dashboard</button><p id="gne" class="mono" style="color:var(--bad)"></p></div>';
+  setTimeout(adminOpen,0);
+  return '<h1>Admin Dashboard</h1><p class="mono">To make someone an admin, give them Editor access in the app’s Share settings. They still need their own registered name, username and password to open this page.</p>'+'<div class="card"><h3>Upload to the Library for everyone</h3><p class="mono">Everyone can search it by course name and level.</p><input id="auc" placeholder="Course (e.g. EEE 301)"><input id="aut" placeholder="Title"><select id="aul"><option>100 level</option><option>200 level</option><option>300 level</option><option>400 level</option><option>500 level</option></select><select id="aua"><option>Material</option><option>Past questions</option></select><div class="grid"><button onclick="$(\'auf\').click()">Choose file</button><button class="p" onclick="adminUpload()">Upload</button></div><input id="auf" type="file" accept="image/*,application/pdf,.csv,.md,.json,.txt" style="display:none" onchange="PFL=this.files[0];$(\'aun\').textContent=PFL?PFL.name:\'\'"><p class="mono" id="aun"></p></div>'+'<div id="adq"></div><div id="ad"></div>';
+}
+async function adminUnlock(){var e=$('gne');try{if($('gn1').value.trim().toLowerCase()!=String(ME.full_name).toLowerCase()||$('gn3').value.trim().toLowerCase()!=ME.username){e.textContent='These details do not match what you registered.';return}var r=await sb.auth.signInWithPassword({email:em(ME.username),password:$('gn4').value});if(r.error){e.textContent='These details do not match what you registered.';return}ADOK=true;render()}catch(x){e.textContent='Could not check. Try again.'}}
+async function adminUpload(){var c=$('auc').value.trim(),t=$('aut').value.trim(),st=$('aun');if(!c||!t||!PFL){st.textContent='Enter the course, a title and choose a file.';return}if(!CAS){st.textContent='Uploads are not available for your account.';return}if(PFL.size>20*1024*1024){st.textContent='Files must be under 20 MB.';return}try{st.textContent='Uploading…';var r=await CAS.upload(PFL);if(await libAdd({course:c,title:t,kind:'file',cat:$('aua').value,level:$('aul').value,official:true,file:{id:r.id,name:PFL.name.slice(0,80),type:r.contentType||PFL.type}})){st.textContent='Uploaded for everyone.';PFL=null}else st.textContent=''}catch(e){st.textContent='Upload failed.'}}
+function adminOpen(){
+  var b=$('ad');if(!b)return;if(ISADM&&CDB){commBoot();libBoot();followBoot();reqBoot();drawAdminReq()}
+  if(!ISADM){b.innerHTML='<p class="empty">This page is only for admins.</p>';return}
+  if(!ADU)ADU=CDB.collection('activity').limit(2000).onSnapshot(function(s){AD=s.docs.map(function(d){return d.data()});if(tab=='admin')drawAdmin()},function(){ADU=null;var e=$('ad');if(e)e.innerHTML='<p class="empty">Could not load activity.</p>'});
+  drawAdmin();
+}
+async function drawAdmin(){
+  var b=$('ad');if(!b||!ISADM)return;
+  var now=Date.now(),day=86400000,dk=function(n){return new Date(now-n*day).toISOString().slice(0,10)};
+  var dau=function(d){return AD.filter(function(a){return (a.days||[]).indexOf(d)>=0}).length},nu=function(d){return AD.filter(function(a){return a.first&&new Date(a.first).toISOString().slice(0,10)==d}).length};
+  var days=[];for(var i=13;i>=0;i--)days.push(dk(i));
+  var mx=Math.max.apply(null,[1].concat(days.map(dau)));
+  var onNow=Object.keys(PRES).filter(isOn).length,wk=AD.filter(function(a){return a.last&&now-a.last<7*day}).length;
+  var tot={};AD.forEach(function(a){Object.keys(a.counts||{}).forEach(function(k){tot[k]=(tot[k]||0)+a.counts[k]})});
+  var keys=Object.keys(tot).sort(function(a,c){return tot[c]-tot[a]});
+  var ids=AD.map(function(a){return a.by}).filter(function(x,i,r){return x&&r.indexOf(x)==i}),ps=ids.length?await CUS.profiles(ids):{};
+  b=$('ad');if(!b)return;
+  var rel=function(t){var m=Math.floor((now-t)/60000);return m<1?'just now':m<60?m+' min ago':m<1440?Math.floor(m/60)+' h ago':Math.floor(m/1440)+' d ago'};
+  b.innerHTML='<div class="grid"><div class="card"><p class="mono">People using the app</p><div class="big">'+AD.length+'</div></div><div class="card"><p class="mono">Online now</p><div class="big">'+onNow+'</div></div><div class="card"><p class="mono">Active today</p><div class="big">'+dau(dk(0))+'</div></div><div class="card"><p class="mono">Active this week</p><div class="big">'+wk+'</div></div><div class="card"><p class="mono">Posts</p><div class="big">'+PO.length+'</div></div><div class="card"><p class="mono">Library items</p><div class="big">'+LB.length+'</div></div><div class="card"><p class="mono">Follows</p><div class="big">'+FW.length+'</div></div></div>'+
+  '<h2>What people use most</h2><div class="card">'+(keys.length?keys.map(function(k){return '<div class="row"><span>'+esc(k.replace(/^tab_/,'Opened ').replace(/_/g,' '))+'</span><b>'+tot[k]+'</b></div>'}).join(''):'<p class="empty">No activity yet.</p>')+'</div>'+
+  '<h2>Each person</h2>'+(AD.length?AD.slice().sort(function(a,c){return (c.last||0)-(a.last||0)}).map(function(a){var p=ps[a.by]||{},c=a.counts||{};return '<div class="card"><div style="display:flex;gap:10px;align-items:center">'+avt(a.by,AV[a.by]||p.avatarUrl,36)+'<span><b>'+esc(p.name||'Someone')+'</b><br><span class="mono">Last active '+rel(a.last||0)+' · '+(a.days||[]).length+' active days · '+(a.sessions||0)+' sessions</span></span></div><p class="mono" style="margin:8px 0 0">Tests: '+((c.exam||0)+(c.practice||0))+' · Messages: '+(c.message||0)+' · Posts: '+(c.post||0)+' · Comments: '+(c.comment||0)+' · Lectures: '+(c.lecture||0)+' · Journal: '+(c.journal||0)+' · Library shares: '+(c.library_share||0)+'</p></div>'}).join(''):'<p class="empty">No one yet.</p>')+
+  '<p class="mono">Counts are kept per device and may undercount people who use several devices.</p>';
+}
+function drawNav(){$('nav').innerHTML='<div class="brand"><b>KINS SCHOLAR</b><br><span class="mono">Your Personal Academic Companion</span></div>'+TABS.map(function(t){return '<button class="'+(t[0]==tab?'on':'')+'" onclick="go(\''+t[0]+'\')"><span class="ic">'+(IC[t[0]]||'•')+'</span><span class="nl">'+t[1]+'</span></button>'}).join('');}
+/* MEDIA STORE (IndexedDB) */
+var DB;
+function db(cb){if(DB)return cb(DB);var r=indexedDB.open('kings-media',1);r.onupgradeneeded=function(){r.result.createObjectStore('f',{keyPath:'id'})};r.onsuccess=function(){DB=r.result;cb(DB)};r.onerror=function(){alert('This browser cannot store files offline.')}}
+function dbPut(o,cb){db(function(d){var t=d.transaction('f','readwrite');t.objectStore('f').put(o);t.oncomplete=function(){if(cb)cb()}})}
+function dbAll(cb){db(function(d){var q=d.transaction('f').objectStore('f').getAll();q.onsuccess=function(){cb(q.result)}})}
+function dbDel(id,cb){db(function(d){var t=d.transaction('f','readwrite');t.objectStore('f').delete(id);t.oncomplete=function(){if(cb)cb()}})}
+/* LECTURES */
+var sess=null,mr=null,sr=null,strm=null,chunks=[],live='',recCourse='',t0=0,recT=null,pts=[];
+function lerr(m){var e=$('lerr');if(e)e.textContent=m}
+function lecView(){
+  setTimeout(loadLec,0);setTimeout(drawPts,0);
+  var h='<h1>Lecture studio</h1>';
+  if(sess){
+    h+='<div class="card"><p class="mono">'+(sess=='rec'?'Recording':'Taking notes')+' · '+esc(recCourse)+'</p><div class="big" id="rt">0:00</div><button class="p" onclick="stopSess()">'+(sess=='rec'?'Stop and save':'Save lecture notes')+'</button></div>'+
+    (sess=='notes'?'<div class="card"><h3>Jot down a point</h3><p class="mono">Each point is stamped with the lecture time.</p><div class="row"><input id="lp" placeholder="e.g. key formula, definition, exam hint" onkeydown="if(event.key==\'Enter\')addPoint()"><button class="p" onclick="addPoint()">Add</button></div><div id="lpl"></div></div>':'')+
+    (sess=='rec'?'<div class="card"><h3>Live transcript</h3><p id="lt">'+(sr?esc(live):'Not turned on.')+'</p></div>':'');
+  }else{
+    h+='<div class="card"><h3>Record a lecture</h3><input id="lc" placeholder="Course (e.g. EEE 301)"><label class="mono"><input id="ltx" type="checkbox" style="width:auto"> Also try a live transcript (needs internet, may not work on every phone)</label><button class="p" onclick="startRec()">Start recording</button><p id="lerr" class="mono" style="color:var(--bad)"></p><p class="mono">If the recorder is blocked, record with your phone’s own recorder and attach the audio:</p><button onclick="$(\'laf\').click()">Use phone recorder or add audio</button><input id="laf" type="file" accept="audio/*" capture style="display:none" onchange="addAudio(this)"></div><div class="card"><h3>Jot lecture points</h3><p class="mono">Separate from recording. Just type your points as the lecture goes.</p><input id="lcn" placeholder="Course (e.g. EEE 301)"><button class="p" onclick="startNotes()">Start jotting</button></div>';
+  }
+  return h+'<div id="ll"></div><div id="ll3"></div>';
+}
+function tick(){clearInterval(recT);t0=Date.now();recT=setInterval(function(){var e=$('rt');if(e)e.textContent=fmt(Math.floor((Date.now()-t0)/1000))},1000)}
+async function startRec(){
+  var c=$('lc').value.trim(),wantTx=$('ltx')&&$('ltx').checked;
+  if(!c){lerr('Enter the course first.');return}
+  if(!window.MediaRecorder||!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){lerr('This browser cannot record audio here. Use the phone recorder button below, or jot points only.');return}
+  try{strm=await navigator.mediaDevices.getUserMedia({audio:true})}
+  catch(e){lerr(e&&e.name=='NotAllowedError'?'Microphone access is blocked. Allow the microphone for this page in your browser settings, or use the phone recorder button below.':e&&e.name=='NotFoundError'?'No microphone was found on this device.':'Could not start the microphone ('+((e&&e.name)||'error')+'). Use the phone recorder button below.');return}
+  try{
+    chunks=[];live='';pts=[];recCourse=c;
+    var mt=['audio/webm;codecs=opus','audio/webm','audio/mp4'].filter(function(t){return MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t)})[0];
+    mr=mt?new MediaRecorder(strm,{mimeType:mt}):new MediaRecorder(strm);
+    mr.ondataavailable=function(e){if(e.data&&e.data.size)chunks.push(e.data)};
+    mr.onstop=function(){finishSess(chunks.length?new Blob(chunks,{type:mr.mimeType||'audio/webm'}):null)};
+    mr.start(1000);
+  }catch(e){strm.getTracks().forEach(function(t){t.stop()});lerr('Recording could not start on this device. Use the phone recorder button below.');return}
+  sr=null;
+  if(wantTx){var SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(SR){try{sr=new SR();sr.continuous=true;sr.interimResults=false;sr.lang='en-NG';
+    sr.onresult=function(e){for(var i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)live+=e.results[i][0].transcript+' ';var el=$('lt');if(el)el.textContent=live};
+    sr.onend=function(){if(sess=='rec')try{sr.start()}catch(x){}};sr.start()}catch(e){sr=null}}}
+  sess='rec';tick();render();
+}
+function startNotes(){var c=$('lcn').value.trim();if(!c){lerr('Enter the course first.');return}recCourse=c;pts=[];live='';sess='notes';tick();render()}
+function stopSess(){if(sess=='rec'&&mr&&mr.state!='inactive')mr.stop();else finishSess(null)}
+function finishSess(blob){
+  clearInterval(recT);if(sr)try{sr.stop()}catch(e){}if(strm)strm.getTracks().forEach(function(t){t.stop()});
+  var id='L'+Date.now(),item={id:id,course:recCourse,date:today(),text:live.trim(),points:pts.slice(),dur:Math.floor((Date.now()-t0)/1000),audio:!!blob};
+  sr=null;strm=null;sess=null;S.lec=S.lec||[];S.lec.push(item);save();logAct('lecture');
+  if(blob)dbPut({id:id,kind:'lecaudio',audio:blob});
+  render();
+}
+function addAudio(el){
+  var f=el.files[0];el.value='';if(!f)return;var c=$('lc').value.trim();if(!c){lerr('Enter the course first, then attach the audio.');return}
+  var id='L'+Date.now();S.lec=S.lec||[];S.lec.push({id:id,course:c,date:today(),text:'',points:[],dur:0,audio:true});save();logAct('lecture');
+  dbPut({id:id,kind:'lecaudio',audio:f});render();
+}
+function addPoint(){var el=$('lp'),v=el.value.trim();if(!v)return;pts.push({at:Math.floor((Date.now()-t0)/1000),text:v.slice(0,300)});el.value='';el.focus();drawPts()}
+function drawPts(){var e=$('lpl');if(e)e.innerHTML=pts.length?pts.map(function(p){return '<div class="card" style="margin:6px 0"><span class="mono">'+fmt(p.at)+'</span> '+esc(p.text)+'</div>'}).join(''):'<p class="empty">No points yet.</p>'}
+function loadLec(){
+  var e=$('ll');if(!e)return;
+  var L=(S.lec||[]).slice().reverse();
+  e.innerHTML=L.length?L.map(function(l){var i=S.lec.indexOf(l);return '<div class="card"><div class="row"><h3>'+esc(l.course)+'</h3><span class="mono">'+l.date+(l.dur?' · '+fmt(l.dur):'')+'</span></div><div id="au-'+l.id+'"></div>'+(l.points&&l.points.length?'<p class="mono" style="margin:8px 0 2px">Points jotted</p>'+l.points.map(function(p){return '<div><span class="mono">'+fmt(p.at)+'</span> '+esc(p.text)+'</div>'}).join(''):'')+'<label class="mono">Notes</label><textarea onchange="S.lec['+i+'].text=this.value;save()">'+esc(l.text||'')+'</textarea><button class="x" onclick="delLec('+i+')">Delete</button></div>'}).join(''):'<p class="empty">Your lectures, points and notes will appear here.</p>';
+  dbAll(function(a){
+    a.forEach(function(x){if(x.kind=='lecaudio'&&x.audio){var h=$('au-'+x.id);if(h)h.innerHTML='<audio controls style="width:100%;margin:8px 0" src="'+URL.createObjectURL(x.audio)+'"></audio>'}});
+    var old=a.filter(function(x){return x.kind=='lecture'&&x.audio}).sort(function(x,y){return x.id<y.id?1:-1}),o=$('ll3');
+    if(o&&old.length)o.innerHTML='<h2>Earlier recordings</h2>'+old.map(function(l){return '<div class="card"><div class="row"><h3>'+esc(l.course)+'</h3><span class="mono">'+l.date+'</span></div><audio controls style="width:100%;margin:8px 0" src="'+URL.createObjectURL(l.audio)+'"></audio><p style="white-space:pre-wrap">'+esc(l.text||'')+'</p></div>'}).join('');
+  });
+}
+function delLec(i){var l=S.lec[i];if(!l||!confirm('Delete this lecture?'))return;S.lec.splice(i,1);save();render();dbDel(l.id)}
+/* VAULT */
+function myVaultView(){
+  setTimeout(loadVault,0);
+  var q=S.quotes.length?S.quotes[Math.floor(Math.random()*S.quotes.length)]:'';
+  return '<h2>Saved offline</h2>'+(q?'<div class="card"><h3>'+esc(q)+'</h3></div>':'')+'<div class="card"><button class="p" onclick="$(\'vf\').click()">Add pictures, videos or music</button><input id="vf" type="file" multiple accept="image/*,video/*,audio/*" style="display:none" onchange="addMedia(this)"><div class="row" style="margin-top:10px"><input id="vq" placeholder="Save a quote or verse"><button onclick="addQuote()">Save</button></div></div><div id="vm"></div>'+
+  (S.quotes.length?'<h2>Quotes</h2>'+S.quotes.map(function(x,i){return '<div class="card row"><span>'+esc(x)+'</span><button class="x" onclick="S.quotes.splice('+i+',1);save();render()" aria-label="Delete quote">✕</button></div>'}).join(''):'');
+}
+function addQuote(){var v=$('vq').value.trim();if(!v)return;S.quotes.unshift(v);save();render()}
+function addMedia(el){var fs=Array.prototype.slice.call(el.files),n=0;if(!fs.length)return;fs.forEach(function(f,i){dbPut({id:'M'+Date.now()+'-'+i,kind:'media',type:f.type,name:f.name,blob:f},function(){if(++n==fs.length)render()})})}
+function loadVault(){dbAll(function(a){
+  var m=a.filter(function(x){return x.kind=='media'}).sort(function(x,y){return x.id<y.id?1:-1}),e=$('vm');if(!e)return;
+  e.innerHTML=m.length?m.map(function(f){var u=URL.createObjectURL(f.blob),t=f.type||'',b;
+    if(t.indexOf('image')==0)b='<img class="media" alt="'+esc(f.name)+'" src="'+u+'">';
+    else if(t.indexOf('video')==0)b='<video class="media" controls preload="metadata" src="'+u+'"></video>';
+    else b='<p>'+esc(f.name)+'</p><audio controls style="width:100%" src="'+u+'"></audio>';
+    return '<div class="card">'+b+'<button class="x" onclick="dbDel(\''+f.id+'\',render)">Remove</button></div>'}).join(''):'<p class="empty">Add a few pictures, videos or songs while you have data. They will play offline.</p>';
+})}
+boot();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
+</script>
+</body>
+</html>
